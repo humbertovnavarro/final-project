@@ -6,6 +6,7 @@ const staticMiddleware = require('./static-middleware');
 const ClientError = require('./client-error');
 const urlMiddleware = express.urlencoded({ extended: false });
 const app = express();
+
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -20,6 +21,9 @@ app.use(errorMiddleware);
 app.use(urlMiddleware);
 
 app.post('/streams/on_publish', (req, res, next) => {
+  if (req.ip !== '::ffff:127.0.0.1') {
+    return;
+  }
   const { name, clientid: clientId, addr: ip } = req.body;
   if (name.match(/^[a-zA-Z0-9_]+$/) === null) {
     return next(new ClientError('Invalid stream name', 400));
@@ -37,6 +41,9 @@ app.post('/streams/on_publish', (req, res, next) => {
 });
 
 app.post('/streams/on_done', (req, res, next) => {
+  if (req.ip !== '::ffff:127.0.0.1' || '127.0.0.1' || '::ffff') {
+    return;
+  }
   // We can trust everything here because it's already bene handled.
   const { clientid: clientId } = req.body;
   const sql = `
