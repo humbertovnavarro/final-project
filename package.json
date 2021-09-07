@@ -5,7 +5,7 @@
   "description": "A full stack JavaScript solo project.",
   "main": "server/index.js",
   "scripts": {
-    "install": "bash scripts/setup.bash",
+    "install": "bash scripts/setup.bash && npm i",
     "build": "webpack --mode=production",
     "start": "node server/index.js",
     "dev": "npm-run-all --silent --parallel dev:*",
