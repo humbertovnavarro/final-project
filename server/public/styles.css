@@ -13,12 +13,14 @@ body {
   background-color: #0d7377;
 }
 
-.shaka-video-container {
+.player {
   background-color: #2d2424;
   max-height: 90vh;
+  margin-bottom: 0.5rem;
 }
 
 #content {
+  margin: 0.5rem;
   flex-grow: 1;
 }
 
@@ -28,4 +30,20 @@ body {
 
 .container {
   width: 100%;
+}
+
+.item-center {
+  align-items: center;
+}
+
+.cyan {
+  background-color: #0d7377;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.rounded {
+  border-radius: 0.5rem;
 }

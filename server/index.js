@@ -52,7 +52,7 @@ app.post('/streams/on_done', (req, res, next) => {
   db.query(sql, [clientId]);
 });
 
-app.get('/api/users/:id', (req, res, next) => {
+app.get('/api/channel/:id', (req, res, next) => {
   const id = req.params.id;
   if (Number.parseInt(id) < 0) {
     throw new ClientError(400, 'Invalid user id');
@@ -64,7 +64,7 @@ app.get('/api/users/:id', (req, res, next) => {
   const params = [id];
   db.query(sql, params)
     .then(data => {
-      res.json(data.rows);
+      res.json(data.rows[0]);
     }).catch(err => next(err));
 });
 
