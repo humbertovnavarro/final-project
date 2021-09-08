@@ -19,3 +19,4 @@ make install
 cd ..
 rm -rf $rtmpPath
 rm -rf $nginxPath
+cp nginx.example.conf nginx/conf/nginx.conf
