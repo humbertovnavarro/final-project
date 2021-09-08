@@ -15,21 +15,18 @@ CREATE TABLE "public"."users" (
   OIDS=FALSE
 );
 
-
-
 CREATE TABLE "public"."streams" (
 	"streamId" integer NOT NULL,
 	"channelId" integer NOT NULL,
 	"viewers" integer NOT NULL DEFAULT '0',
 	"previewImage" TEXT,
 	"ip" inet NOT NULL,
+	"isLive" boolean NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
 	CONSTRAINT "streams_pk" PRIMARY KEY ("streamId")
 ) WITH (
   OIDS=FALSE
 );
-
-
 
 CREATE TABLE "public"."messages" (
 	"messageId" serial,

@@ -28,12 +28,13 @@ app.post('/streams/on_publish', (req, res, next) => {
   if (name.match(/^[a-zA-Z0-9_]+$/) === null) {
     return next(new ClientError('Invalid stream name', 400));
   }
-  // We can trust the rest of the fields because they're coming from NGINX
   const sql = `
-    insert into streams ("streamId", "channelId", "ip")
-    values ($1, $2, $3)
+    insert into streams ("streamId", "channelId", "ip", "isLive")
+    values ($1, $2, $3, $4)
+    on conflict ("streamId")
+    do update set "channelId" = $2, "ip" = $3, "isLive" = $4;
   `;
-  const params = [clientId, name, ip];
+  const params = [clientId, name, ip, true];
   db.query(sql, params)
     .then(data => {
       res.sendStatus(200);
@@ -41,19 +42,29 @@ app.post('/streams/on_publish', (req, res, next) => {
 });
 
 app.post('/streams/on_done', (req, res, next) => {
-  if (req.ip !== '::ffff:127.0.0.1' || '127.0.0.1' || '::ffff') {
+  if (req.ip !== '::ffff:127.0.0.1') {
     return;
   }
-  // We can trust everything here because it's already bene handled.
   const { clientid: clientId } = req.body;
   const sql = `
-    delete from streams
-    where "streamId" = $1
+    update streams set "isLive" = false where "streamId" = $1;
   `;
-  const params = [clientId];
+  db.query(sql, [clientId]);
+});
+
+app.get('/api/users/:id', (req, res, next) => {
+  const id = req.params.id;
+  if (Number.parseInt(id) < 0) {
+    throw new ClientError(400, 'Invalid user id');
+  }
+  const sql = `
+    select ("userName") from "users"
+    where "userId" = $1
+  `;
+  const params = [id];
   db.query(sql, params)
     .then(data => {
-      res.sendStatus(200);
+      res.json(data.rows);
     }).catch(err => next(err));
 });
 
