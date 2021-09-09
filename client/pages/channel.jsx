@@ -6,17 +6,18 @@ export default class Channel extends React.Component {
   static contextType = AppContext;
   constructor(props) {
     super(props);
-    this.state = {isLive: false};
+    this.state = {isLive: false, channelId: null};
   }
+
   checkStatus() {
-    let channelId = this.context.params.get('channelId');
+    let channelId = this.context.route.params.get('channelId');
     fetch(`/api/channel/${channelId}/status`)
       .then(res => res.json())
       .then(data => {
         if(data.isLive) {
-          this.setState({isLive: true});
+          this.setState({isLive: true, channelId: channelId});
         } else {
-          this.setState({isLive: false});
+          this.setState({isLive: false, channelId: channelId});
         }
       }).catch(err => {
         console.error(err);
@@ -34,8 +35,7 @@ export default class Channel extends React.Component {
   }
 
   render() {
-    let channelId = this.context.params.get('channelId');
-    const player = <ShakaPlayer ref={this.ref} autoPlay className='player rounded' src={`/live/${channelId}.mpd`} />
+    const player = <ShakaPlayer autoPlay className='player rounded' src={`/live/${this.state.channelId}.mpd`} />
     const dummyPlayer = <div className='player rounded'></div>
     return (
       <>

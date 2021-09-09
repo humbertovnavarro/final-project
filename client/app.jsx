@@ -15,15 +15,13 @@ export default class App extends React.Component {
     window.addEventListener('hashchange', () => {
       const route = parseRoute(window.location.hash);
       this.setState({
-        route: route,
-        path: route.path,
-        params: route.params
+        route: route
       });
     });
   }
 
   renderContent() {
-    const { path } = this.state.route
+    const { path } = this.state.route;
     switch (path) {
       case 'channel':
         return <Channel />;
@@ -34,9 +32,7 @@ export default class App extends React.Component {
 
   render() {
     const contextValue = {
-      route: this.state.route,
-      path: this.state.route.path,
-      params: this.state.route.params
+      route: this.state.route
     };
     return(
       <AppContext.Provider value={contextValue}>

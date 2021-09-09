@@ -23,14 +23,8 @@ module.exports = function routes(app, db) {
     if (id < 0 || Number.isNaN(id)) {
       throw new ClientError(400, 'Invalid user id');
     }
-    if(fs.existsSync(path.join(__dirname,`/public/live/${id}.mpd`))) {
-      res.json({
-        isLive: true
-      });
-    } else {
-      res.json({
-        isLive: false
-      });
-    }
+    fs.stat(path.join(__dirname,`/public/live/${id}.mpd`), (stat) => {
+      res.json({isLive: stat ? false : true});
+    });
   });
 };
