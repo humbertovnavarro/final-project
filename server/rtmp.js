@@ -9,12 +9,10 @@ module.exports = function rtmp(app, db) {
       return next(new ClientError('Invalid stream name', 400));
     }
     const sql = `
-    insert into streams ("streamId", "channelId", "ip", "isLive")
-    values ($1, $2, $3, $4)
-    on conflict ("streamId")
-    do update set "channelId" = $2, "ip" = $3, "isLive" = $4;
+    insert into streams ("streamId", "channelId", "ip")
+    values ($1, $2, $3)
   `;
-    const params = [clientId, name, ip, true];
+    const params = [clientId, name, ip];
     db.query(sql, params)
       .then(data => {
         res.sendStatus(200);

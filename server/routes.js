@@ -2,8 +2,8 @@ const ClientError = require('./client-error');
 module.exports = function routes(app, db) {
 
   app.get('/api/channel/:id', (req, res, next) => {
-    const id = req.params.id;
-    if (Number.parseInt(id) < 0) {
+    const id = Number.parseInt(req.params.id);
+    if (id < 0 || Number.isNaN(id)) {
       throw new ClientError(400, 'Invalid user id');
     }
     const sql = `
@@ -17,8 +17,8 @@ module.exports = function routes(app, db) {
   });
 
   app.get('/api/channel/:id/status', (req, res, next) => {
-    const id = req.params.id;
-    if (Number.parseInt(id) < 0) {
+    const id = Number.parseInt(req.params.id);
+    if (id < 0 || Number.isNaN(id)) {
       throw new ClientError(400, 'Invalid user id');
     }
     const sql = `
