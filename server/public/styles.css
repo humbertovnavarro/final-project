@@ -16,6 +16,7 @@ body {
 .player {
   background-color: #2d2424;
   max-height: auto;
+  min-height: 80vh;
   margin-bottom: 0.5rem;
 }
 

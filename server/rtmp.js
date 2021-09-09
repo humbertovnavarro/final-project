@@ -1,5 +1,6 @@
 const ClientError = require('./client-error');
 module.exports = function rtmp(app, db) {
+
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;
@@ -19,14 +20,14 @@ module.exports = function rtmp(app, db) {
       }).catch(err => next(err));
   });
 
-  app.post('/streams/on_done', (req, res, next) => {
+  app.post('/streams/on_publish_done', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;
     }
-    const { clientid: clientId } = req.body;
+    const { name } = req.body;
     const sql = `
-    update streams set "isLive" = false where "streamId" = $1;
+    delete from streams where "channelId" = $1;
   `;
-    db.query(sql, [clientId]);
+    db.query(sql, [name]);
   });
 };

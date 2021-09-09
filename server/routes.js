@@ -1,4 +1,6 @@
 const ClientError = require('./client-error');
+const fs = require('fs');
+const path = require('path');
 module.exports = function routes(app, db) {
 
   app.get('/api/channel/:id', (req, res, next) => {
@@ -21,16 +23,14 @@ module.exports = function routes(app, db) {
     if (id < 0 || Number.isNaN(id)) {
       throw new ClientError(400, 'Invalid user id');
     }
-    const sql = `
-      select count(*) from "users" left join "streams"
-      on "userId" = "channelId"
-      where "channelId" = $1
-    `;
-    const params = [id];
-    db.query(sql, params)
-      .then(data => {
-        res.json({ isLive: (data.rows[0].count > 0) });
-      })
-      .catch(err => next(err));
+    if(fs.existsSync(path.join(__dirname,`/public/live/${id}.mpd`))) {
+      res.json({
+        isLive: true
+      });
+    } else {
+      res.json({
+        isLive: false
+      });
+    }
   });
 };

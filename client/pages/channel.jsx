@@ -13,11 +13,10 @@ export default class Channel extends React.Component {
     fetch(`/api/channel/${channelId}/status`)
       .then(res => res.json())
       .then(data => {
-        if(data.isLive != this.state.isLive) {
-          //Workaround to wait for NGINX to generate a manifest file before loading it
-          setTimeout(() => {
-            this.setState({isLive: data.isLive});
-          }, 1000);
+        if(data.isLive) {
+          this.setState({isLive: true});
+        } else {
+          this.setState({isLive: false});
         }
       }).catch(err => {
         console.error(err);
