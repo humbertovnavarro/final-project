@@ -21,9 +21,8 @@ CREATE TABLE "public"."streams" (
 	"viewers" integer NOT NULL DEFAULT '0',
 	"previewImage" TEXT,
 	"ip" inet NOT NULL,
-	"isLive" boolean NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
-	CONSTRAINT "streams_pk" PRIMARY KEY ("streamId")
+	CONSTRAINT "streams_pk" PRIMARY KEY ("channelId")
 ) WITH (
   OIDS=FALSE
 );
