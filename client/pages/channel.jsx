@@ -29,6 +29,9 @@ export default class Channel extends React.Component {
       this.checkStatus();
     }, 5000);
   }
+  componentWillUnmount() {
+    clearInterval(this.checkStream);
+  }
 
   render() {
     let channelId = this.context.params.get('channelId');
