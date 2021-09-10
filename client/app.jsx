@@ -2,6 +2,7 @@ import React from 'react';
 import parseRoute from './parse-route';
 import AppContext from './app-context';
 import Channel from './pages/channel';
+import Browse from './pages/browse';
 import Header from './components/header';
 export default class App extends React.Component {
   constructor(props) {
@@ -25,6 +26,8 @@ export default class App extends React.Component {
     switch (path) {
       case 'channel':
         return <Channel />;
+      case 'browse':
+        return <Browse />
       default:
         return <Channel />;
     }
@@ -37,7 +40,9 @@ export default class App extends React.Component {
     return(
       <AppContext.Provider value={contextValue}>
         <Header />
-        {this.renderContent()}
+        <div id="content">
+          {this.renderContent()}
+        </div>
       </AppContext.Provider>
       );
   }

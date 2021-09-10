@@ -1,5 +1,6 @@
 import React from 'react';
 import AppContext from '../app-context';
+import Avatar from '../components/avatar';
 import ShakaPlayer from 'shaka-player-react';
 import 'shaka-player/dist/controls.css';
 export default class Channel extends React.Component {
@@ -11,13 +12,14 @@ export default class Channel extends React.Component {
 
   checkStatus() {
     let channelId = this.context.route.params.get('channelId');
-    fetch(`/api/channel/${channelId}/status`)
+    this.setState({channelId: channelId});
+    fetch(`/api/channel/${channelId}`)
       .then(res => res.json())
       .then(data => {
         if(data.isLive) {
-          this.setState({isLive: true, channelId: channelId});
+          this.setState({isLive: true, channelName: data.channelName});
         } else {
-          this.setState({isLive: false, channelId: channelId});
+          this.setState({isLive: false, channelName: data.channelName});
         }
       }).catch(err => {
         console.error(err);
@@ -35,11 +37,18 @@ export default class Channel extends React.Component {
   }
 
   render() {
-    const player = <ShakaPlayer autoPlay className='player rounded' src={`/live/${this.state.channelId}.mpd`} />
+    const player = <ShakaPlayer autoPlay className="player rounded" src={`/live/${this.state.channelId}.mpd`} />
     const dummyPlayer = <div className='player rounded'></div>
     return (
       <>
-        { this.state.isLive ? player : dummyPlayer }
+        { (this.state.isLive && this.state.channelId !== null) ? player : dummyPlayer }
+        <div className="row item-center">
+          <Avatar
+            channelId={this.state.channelId}
+            isLive={this.state.isLive}
+          />
+          <p>{this.state.channelName}</p>
+        </div>
       </>
     );
   }
