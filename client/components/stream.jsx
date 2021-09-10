@@ -2,13 +2,13 @@ import React from 'react';
 import Avatar from './avatar';
 function Stream(props) {
   let style;
-  if(props.isLive) {
-    style = {backgroundImage: `url(${props.preview})`};
+  if (props.isLive) {
+    style = { backgroundImage: `url(${props.preview || 'images/placeholder.png'})` };
   } else {
     style = {};
   }
   const hidden = props.isLive ? '' : 'hidden';
-  return(
+  return (
   <a href={`#channel?channelId=${props.channelId}`}>
   <div className="stream-card" style={style}>
     <div className="stream-card-header">

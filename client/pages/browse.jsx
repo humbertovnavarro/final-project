@@ -3,7 +3,7 @@ import Stream from '../components/stream';
 class Browse extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {streams: [], search: ''};
+    this.state = { streams: [], search: '' };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -13,7 +13,7 @@ class Browse extends React.Component {
 
   getLiveStreams(offset) {
     const payload = {
-      offset: offset || 1,
+      offset: offset || 1
     };
     const request = {
       method: 'GET',
@@ -21,8 +21,8 @@ class Browse extends React.Component {
       data: payload
     };
     fetch('/api/channels/live', request)
-    .then(res => res.json())
-    .then(res => this.setState({streams: res}));
+      .then(res => res.json())
+      .then(res => this.setState({ streams: res }));
   }
 
   createStreamCards(streams) {
@@ -35,26 +35,28 @@ class Browse extends React.Component {
         isLive={stream.isLive}
         viewers={stream.viewers}
         title={stream.title}
-        preview={"/images/placeholder.png"}/>
+        preview={stream.preview}/>
       );
     });
     return streamCards;
   }
+
   handleChange(event) {
-    this.setState({search: event.target.value});
+    this.setState({ search: event.target.value });
     const request = {
       method: 'POST',
-      body: JSON.stringify({query: event.target.value}),
+      body: JSON.stringify({ query: event.target.value }),
       headers: {
         'Content-Type': 'application/json'
       }
     };
     fetch('/api/channels/query', request)
-    .then(res => res.json())
-    .then(res => {
-      this.setState({streams: res});
-    });
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ streams: res });
+      });
   }
+
   render() {
     const streamCards = this.createStreamCards(this.state.streams);
     return (
