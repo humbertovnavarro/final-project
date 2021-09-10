@@ -19,6 +19,7 @@ CREATE TABLE "public"."streams" (
 	"streamId" integer NOT NULL,
 	"channelId" integer NOT NULL,
 	"viewers" integer NOT NULL DEFAULT '0',
+	"isLive" boolean NOT NULL DEFAULT 'true',
 	"previewImage" TEXT,
 	"ip" inet NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
