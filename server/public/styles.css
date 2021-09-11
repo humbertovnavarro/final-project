@@ -4,6 +4,62 @@ body {
   font-family: 'Ramabhadra', sans-serif;
 }
 
+input {
+  width: 100%;
+  height: 2rem;
+}
+
+.custom-button {
+  background-color: #0D7377;
+  width: 7rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  font: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.modal {
+  font-family: 'Roboto', sans-serif;
+  z-index: 2;
+  max-width: 50vw;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px #000;
+  background-color: #323232;
+}
+
+.modal-container {
+  z-index: 3;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  padding: 5rem;
+}
+
+form label {
+  position: relative;
+  transform: translateY(-1rem);
+  font-family: 'Raleway', sans-serif;
+}
+
+
+
 .red {
   color:rgb(255, 0, 0);
 }
@@ -11,9 +67,7 @@ body {
 .header {
   position: --webkit-sticky;
   position: sticky;
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
+  padding: 0.5rem;
   font-family: 'Righteous', cursive;
   width: 100%;
   height: 4rem;
@@ -23,6 +77,10 @@ body {
 
 .header h2 {
   margin-left: 1.25rem;
+}
+
+.header .material-icons {
+  font-size: 3rem;
 }
 
 .player {
@@ -37,7 +95,6 @@ body {
   margin: 0.25rem;
   flex-grow: 1;
 }  font-family: 'Ramabhadra', sans-serif;
-
 .row {
   display: flex;
 }
