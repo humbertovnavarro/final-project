@@ -1,0 +1,10 @@
+.row {
+  display: flex;
+}
+.column-half {
+  width: 50%;
+}
+
+.content-end {
+  justify-content: end;
+}

@@ -4,6 +4,7 @@ const express = require('express');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const urlMiddleware = express.urlencoded({ extended: false });
+const jsonMiddleware = express.json();
 const app = express();
 
 const db = new pg.Pool({
@@ -15,8 +16,10 @@ const db = new pg.Pool({
 
 app.use(staticMiddleware);
 app.use(errorMiddleware);
+
 app.use(urlMiddleware);
 require('./rtmp')(app, db);
+app.use(jsonMiddleware);
 require('./routes')(app, db);
 
 app.listen(process.env.PORT, () => {
