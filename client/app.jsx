@@ -4,7 +4,7 @@ import AppContext from './app-context';
 import Channel from './pages/channel';
 import Browse from './pages/browse';
 import Header from './components/header';
-import Login from './components/login';
+import SignUp from './components/signup';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ export default class App extends React.Component {
 
   renderModal() {
     if (this.state.loggingIn) {
-      return <Login setUser={this.setUser} toggleLogin={this.toggleLogin}/>;
+      return <SignUp setUser={this.setUser} toggleLogin={this.toggleLogin}/>;
     }
     return null;
   }

@@ -1,17 +1,18 @@
 import React from 'react';
-import Login from './login';
-class Header extends React.Component{
+class Header extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
-  handleClick(e){
-    switch(e.target.id){
+
+  handleClick(e) {
+    switch (e.target.id) {
       case 'login':
         this.props.toggleLogin();
     }
   }
-  render(){
+
+  render() {
     return (
       <div className="header">
         <div className="row baseline">

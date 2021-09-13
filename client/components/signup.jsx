@@ -1,5 +1,5 @@
 import React from 'react';
-class Login extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +53,7 @@ class Login extends React.Component {
       <div className="modal">
         <form onSubmit={this.handleSubmit}>
           <div>
-            <p className="text-center">Login or Signup</p>
+            <p className="text-center">Signup</p>
           </div>
           <div>
             <p className="red text-center">{this.state.error}</p>
@@ -82,11 +82,10 @@ class Login extends React.Component {
           </div>
           <div>
             <label htmlFor="email">Email </label>
-            <input type="email" id="email" name="email" placeholder="optional"></input>
+            <input type="email" id="email" name="email" placeholder="required"></input>
           </div>
-          <div className="row space-between">
+          <div className="row justify-center">
             <input name="signup" type="submit" value="Sign Up" className="custom-button"/>
-            <input name="login" type="submit" value="Login" className="custom-button"/>
           </div>
         </form>
       </div>
@@ -94,4 +93,4 @@ class Login extends React.Component {
     );
   }
 }
-export default Login;
+export default SignUp;
