@@ -107,9 +107,13 @@ module.exports = function routes(app, db) {
         `;
         const params = [req.body.userName, hash, req.body.email, streamKey.hash];
         db.query(sql, params).then(data => {
-          const token = jwt.sign({ userId: data.rows[0].userId, streamKey: streamKey.key, expire: streamKey.expire }, process.env.TOKEN_SECRET);
+          const encode = {
+            userId: data.rows[0].userid,
+            streamKey: streamKey.key,
+            streamKeyExpires: streamKey.expires
+          };
+          const token = jwt.sign(encode, process.env.TOKEN_SECRET);
           const payload = {
-            userId: data.rows[0].userId,
             token: token
           };
           res.json(payload);
