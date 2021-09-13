@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 function StreamKey() {
   const sha256 = crypto.createHash('sha256');
   let key = '';
