@@ -105,9 +105,9 @@ module.exports = function routes(app, db) {
           insert into "users" ("userName", "hash", "email", "streamKey")
           values ($1, $2, $3, $4) returning "userId";
         `;
-        const params = [req.body.userName, hash, req.body.email, streamKey.key];
+        const params = [req.body.userName, hash, req.body.email, streamKey.hash];
         db.query(sql, params).then(data => {
-          const token = jwt.sign({ userId: data.rows[0].userId, streamKey: streamKey }, process.env.TOKEN_SECRET);
+          const token = jwt.sign({ userId: data.rows[0].userId, streamKey: streamKey.key, expire: streamKey.expire }, process.env.TOKEN_SECRET);
           const payload = {
             userId: data.rows[0].userId,
             token: token
