@@ -33,9 +33,6 @@ input {
   z-index: 2;
   max-width: 50vw;
   height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 20px;
   box-shadow: 0 0 10px #000;
   background-color: #323232;
@@ -56,18 +53,27 @@ input {
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
   width: 100%;
   height: 100%;
-  padding: 5rem;
+  padding: 2rem;
+}
+
+form input {
+  margin-bottom: 1rem;
+}
+
+form div:first-child {
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 form label {
-  position: relative;
-  transform: translateY(-1rem);
+  font-size: 1.5rem;
   font-family: 'Raleway', sans-serif;
+}
+
+form #signup {
+  margin-top: 2rem;
 }
 
 .red {
