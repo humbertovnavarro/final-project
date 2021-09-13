@@ -1,7 +1,6 @@
 require('dotenv/config');
 const pg = require('pg');
 const express = require('express');
-const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const urlMiddleware = express.urlencoded({ extended: false });
 const jsonMiddleware = express.json();
@@ -14,9 +13,9 @@ const db = new pg.Pool({
   }
 });
 
-app.use(staticMiddleware);
-app.use(errorMiddleware);
+db.query('DELETE FROM "streams"');
 
+app.use(staticMiddleware);
 app.use(urlMiddleware);
 require('./rtmp')(app, db);
 app.use(jsonMiddleware);

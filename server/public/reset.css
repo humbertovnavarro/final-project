@@ -25,7 +25,6 @@ a:visited {
 
 p {
   margin: 0;
-
 }
 
 .reverse {
@@ -39,4 +38,26 @@ img {
 
 .hidden {
   display: none !important;
+}
+
+button {
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+label:active {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transform: translateY(1px);
+}
+
+button:active {
+  transform: translateY(1px);
 }

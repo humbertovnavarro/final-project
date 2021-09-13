@@ -4,25 +4,99 @@ body {
   font-family: 'Ramabhadra', sans-serif;
 }
 
+input {
+  width: 100%;
+  height: 2rem;
+}
+
+.custom-button {
+  color: white;
+  border: none;
+  background-color: #0d7377;
+  width: 7rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  font: 'Roboto', sans-serif;
+  text-align: center;
+}
+
+.custom-button:hover {
+  background-color: #0fa8ad;
+}
+
+.custom-button:active {
+  transform: translateY(3px);
+}
+
+.modal {
+  font-family: 'Roboto', sans-serif;
+  z-index: 2;
+  max-width: 50vw;
+  height: 50vh;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #000;
+  background-color: #323232;
+}
+
+.modal-container {
+  backdrop-filter: blur(5px);
+  background-color: #1b1717af;
+  z-index: 3;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+}
+
+form input {
+  margin-bottom: 1rem;
+}
+
+form div:first-child {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+form label {
+  font-size: 1.5rem;
+  font-family: 'Raleway', sans-serif;
+}
+
+form #signup {
+  margin-top: 2rem;
+}
+
 .red {
-  color:rgb(255, 0, 0);
+  color: rgb(255, 0, 0);
 }
 
 .header {
   position: --webkit-sticky;
   position: sticky;
-  padding-left: 0.5rem;
-  display: flex;
-  align-items: center;
+  padding: 0.5rem;
   font-family: 'Righteous', cursive;
   width: 100%;
   height: 4rem;
   background-color: #0d7377;
-  text-shadow:  0px 3px 3px #1b1717a8;
+  text-shadow: 0 3px 3px #1b1717a8;
 }
 
 .header h2 {
   margin-left: 1.25rem;
+}
+
+.header .material-icons {
+  font-size: 3rem;
 }
 
 .player {
@@ -36,7 +110,7 @@ body {
   padding: 0.25rem;
   margin: 0.25rem;
   flex-grow: 1;
-}  font-family: 'Ramabhadra', sans-serif;
+}
 
 .row {
   display: flex;
@@ -73,6 +147,7 @@ body {
   width: 5rem;
   height: 5rem;
 }
+
 .stream-card-footer .avatar {
   width: 3rem;
   height: 3rem;
@@ -152,18 +227,28 @@ body {
   position: absolute;
   left: 0.15rem;
   top: 0.54rem;
-  color: #000000;
+  color: #000;
 }
 
 @media screen and (max-width: 768px) {
   .browse {
     justify-content: center;
   }
+
   .search {
     width: 100%;
   }
+
   .stream-card {
     min-width: calc(16rem * 1.3);
     min-height: calc(9rem * 1.3);
+  }
+
+  .modal {
+    max-width: 90vw;
+    height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 0 10px #000;
+    background-color: #323232;
   }
 }
