@@ -1,6 +1,4 @@
-const crypto = require('crypto');
 module.exports = function rtmp(app, db) {
-
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;
@@ -12,11 +10,10 @@ module.exports = function rtmp(app, db) {
     if (channelId.match(/^[a-zA-Z0-9_]+$/) === null) {
       res.sendStatus(404);
     }
-    const hashedStreamKey = crypto.createHash('sha256').update(streamKey).digest('hex');
     const sql = `
       select "userId" from "users" where "streamKey" = $1
     `;
-    db.query(sql, [hashedStreamKey])
+    db.query(sql, [streamKey])
       .then(result => {
         const user = result.rows[0];
         if (!user) {
