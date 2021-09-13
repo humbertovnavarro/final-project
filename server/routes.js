@@ -5,7 +5,6 @@ const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 module.exports = function routes(app, db) {
-
   app.get('/api/channel/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     if (id < 0 || Number.isNaN(id)) {
@@ -20,16 +19,23 @@ module.exports = function routes(app, db) {
       const params = [id];
       db.query(sql, params)
         .then(data => {
+          if (data.rows.length === 0) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+          }
           const payload = data.rows[0];
           payload.isLive = isLive;
           res.json(payload);
-        }).catch(err => next(err));
+        }).catch(err => {
+          console.error(err);
+          res.status(500).json({ error: 'An unexpected error occured' });
+        });
     });
   });
 
-  app.get('/api/channels/live', (req, res, next) => {
+  app.get('/api/channels/live/:offset?', (req, res, next) => {
     const limit = 10;
-    const offset = Number.parseInt(req.body.offset) || 1;
+    const offset = Number.parseInt(req.params.offset) || 1;
     if (offset <= 0 || Number.isNaN(offset)) {
       res.status(400).json({ error: 'Invalid offset' });
       return;
@@ -44,7 +50,10 @@ module.exports = function routes(app, db) {
       .then(data => {
         res.json(data.rows);
       }
-      ).catch(err => next(err));
+      ).catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      });
   });
 
   app.post('/api/channels/query', (req, res, next) => {
@@ -65,7 +74,10 @@ module.exports = function routes(app, db) {
       .then(data => {
         res.json(data.rows);
       }
-      ).catch(err => { next(err); });
+      ).catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      });
   });
 
   app.post('/api/register', (req, res, next) => {
@@ -101,9 +113,13 @@ module.exports = function routes(app, db) {
             token: token
           };
           res.json(payload);
-        }).catch(err => next(err));
-      }).catch(err => next(err));
-    });
+        });
+      });
+    })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      });
   });
 
 };
