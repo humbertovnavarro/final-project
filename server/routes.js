@@ -5,6 +5,7 @@ const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
 module.exports = function routes(app, db) {
+
   app.get('/api/channel/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     if (id < 0 || Number.isNaN(id)) {
@@ -30,8 +31,7 @@ module.exports = function routes(app, db) {
     const limit = 10;
     const offset = Number.parseInt(req.body.offset) || 1;
     if (offset <= 0 || Number.isNaN(offset)) {
-      res.status = 400;
-      res.json({ error: 'Invalid offset' });
+      res.status(400).json({ error: 'Invalid offset' });
       return;
     }
     const sql = `
@@ -50,8 +50,7 @@ module.exports = function routes(app, db) {
   app.post('/api/channels/query', (req, res, next) => {
     const offset = Number.parseInt(req.params.offset) || 1;
     if (offset <= 0 || Number.isNaN(offset)) {
-      res.status = 400;
-      res.json({ error: 'Invalid offset' });
+      res.status(400).json({ error: 'Invalid offset' });
       return;
     }
     const query = req.body.query;
@@ -85,7 +84,7 @@ module.exports = function routes(app, db) {
     const params = [req.body.userName];
     db.query(sql, params).then(data => {
       if (data.rows.length > 0) {
-        res.json({ error: 'Username already taken' });
+        res.status(400).json({ error: 'Username already taken' });
         return;
       }
       argon2.hash(req.body.password).then(hash => {
