@@ -1,4 +1,3 @@
-const ClientError = require('./client-error');
 const crypto = require('crypto');
 module.exports = function rtmp(app, db) {
 
@@ -36,7 +35,10 @@ module.exports = function rtmp(app, db) {
             res.sendStatus(200);
           });
       })
-      .catch(err => { throw new ClientError(err); });
+      .catch(err => {
+        res.sendStatus(404);
+        console.error(err);
+      });
   });
 
   app.post('/streams/on_publish_done', (req, res, next) => {

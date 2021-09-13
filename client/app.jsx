@@ -14,6 +14,14 @@ export default class App extends React.Component {
       loggingIn: false
     };
     this.toggleLogin = this.toggleLogin.bind(this);
+    this.setUser = this.setUser.bind(this);
+  }
+
+  setUser(token) {
+    this.setState({
+      jwt: token,
+      loggingIn: false
+    });
   }
 
   componentDidMount() {
@@ -22,6 +30,11 @@ export default class App extends React.Component {
       this.setState({
         route: route
       });
+    });
+    window.addEventListener('click', e => {
+      if (e.target.matches('.modal-container')) {
+        this.toggleLogin();
+      }
     });
   }
 
@@ -33,7 +46,7 @@ export default class App extends React.Component {
 
   renderModal() {
     if (this.state.loggingIn) {
-      return <Login/>;
+      return <Login setUser={this.setUser} toggleLogin={this.toggleLogin}/>;
     }
     return null;
   }
@@ -44,7 +57,7 @@ export default class App extends React.Component {
       case 'channel':
         return <Channel />;
       case 'browse':
-        return <Browse />
+        return <Browse />;
       default:
         return <Browse />;
     }
@@ -55,8 +68,7 @@ export default class App extends React.Component {
       route: this.state.route
     };
     const modal = this.renderModal();
-    console.log(modal);
-    return(
+    return (
       <>
       {modal}
       <AppContext.Provider value={contextValue}>
@@ -66,6 +78,6 @@ export default class App extends React.Component {
         </div>
       </AppContext.Provider>
       </>
-      );
+    );
   }
 }
