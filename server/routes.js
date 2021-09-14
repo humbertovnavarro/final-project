@@ -112,6 +112,7 @@ module.exports = function routes(app, db) {
           };
           const token = jwt.sign(encode, process.env.TOKEN_SECRET);
           const payload = {
+            userId: data.rows[0].userId,
             token: token
           };
           res.json(payload);
@@ -131,7 +132,7 @@ module.exports = function routes(app, db) {
       return;
     }
     const sql = `
-      select "userId", "hash" from "users" where "userName" = $1;
+      select "userId", "userName", "hash" from "users" where "userName" = $1;
     `;
     const params = [userName];
     db.query(sql, params)
@@ -139,12 +140,14 @@ module.exports = function routes(app, db) {
         const { hash } = data.rows[0];
         argon2.verify(hash, password).then(match => {
           if (!match) {
-            res.status(401).json({ error: 'Unauthorized' });
+            res.status(401).json({ error: 'Bad Login' });
             return;
           }
           const { userId } = data.rows[0];
           const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET);
           const payload = {
+            userId: userId,
+            userName: userName,
             token: token
           };
           res.status(200).json(payload);
@@ -155,8 +158,7 @@ module.exports = function routes(app, db) {
         res.status(500).json({ error: 'An unexpected error occured' });
       });
   });
-  app.use(authMiddleware);
-  app.get('/api/genkey', (req, res, next) => {
+  app.get('/api/genkey', authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
     const streamKey = new StreamKey();
     const sql = `
