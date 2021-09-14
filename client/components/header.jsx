@@ -8,7 +8,8 @@ class Header extends React.Component {
   handleClick(e) {
     switch (e.target.id) {
       case 'login':
-        this.props.toggleLogin();
+        this.props.toggleModal('sign-up');
+        break;
     }
   }
 
