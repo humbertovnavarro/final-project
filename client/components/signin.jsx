@@ -31,9 +31,7 @@ class SignIn extends React.Component {
           this.setState({ error: data.error });
           return;
         }
-        for (const key in data) {
-          localStorage.setItem(key, data[key]);
-        }
+        localStorage.setItem('user', JSON.stringify(data));
         this.props.setUser(data);
         this.props.toggleModal(null);
       }).catch(err => { console.error(err); });

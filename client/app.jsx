@@ -9,9 +9,10 @@ import SignIn from './components/signin';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    const user = JSON.parse(localStorage.getItem('user')) || {};
     this.state = {
       route: parseRoute(window.location.hash),
-      user: {},
+      user: user,
       modal: null
     };
     this.toggleModal = this.toggleModal.bind(this);
@@ -46,13 +47,13 @@ export default class App extends React.Component {
 
   renderModal() {
     const modal = this.state.modal;
-    switch(modal) {
+    switch (modal) {
       case 'sign-up':
         return <SignUp toggleModal={this.toggleModal} setUser={this.setUser} />;
       case 'sign-in':
         return <SignIn toggleModal={this.toggleModal} setUser={this.setUser} />;
-    default:
-      return null;
+      default:
+        return null;
     }
   }
 
