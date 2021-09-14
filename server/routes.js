@@ -156,7 +156,7 @@ module.exports = function routes(app, db) {
       });
   });
   app.use(authMiddleware);
-  app.post('/api/genkey', (req, res, next) => {
+  app.get('/api/genkey', (req, res, next) => {
     const userId = req.user.userId;
     const streamKey = new StreamKey();
     const sql = `
