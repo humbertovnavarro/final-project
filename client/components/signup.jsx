@@ -34,9 +34,10 @@ class SignUp extends React.Component {
             this.setState({ error: data.error });
             return;
           }
-          const token = JSON.stringify(data.token);
-          localStorage.setItem(data.userId, token);
-          this.props.setUser(data.token);
+          for (const key in data) {
+            localStorage.setItem(key, data[key]);
+          }
+          this.props.setUser(data.token, data.userId);
         }).catch(err => { console.error(err); });
     }
   }
@@ -85,7 +86,7 @@ class SignUp extends React.Component {
             <input type="email" id="email" name="email" placeholder="required"></input>
           </div>
           <div className="row justify-center">
-            <input name="signup" type="submit" value="Sign Up" className="custom-button"/>
+            <input id="signup" name="signup" type="submit" value="Sign Up" className="custom-button"/>
           </div>
         </form>
       </div>

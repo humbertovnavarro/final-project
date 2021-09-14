@@ -11,15 +11,17 @@ export default class App extends React.Component {
     this.state = {
       route: parseRoute(window.location.hash),
       jwt: null,
+      userId: null,
       loggingIn: false
     };
     this.toggleLogin = this.toggleLogin.bind(this);
     this.setUser = this.setUser.bind(this);
   }
 
-  setUser(token) {
+  setUser(token, userId) {
     this.setState({
       jwt: token,
+      userId: userId,
       loggingIn: false
     });
   }
@@ -65,7 +67,8 @@ export default class App extends React.Component {
 
   render() {
     const contextValue = {
-      route: this.state.route
+      route: this.state.route,
+      jwt: this.state.jwt
     };
     const modal = this.renderModal();
     return (
