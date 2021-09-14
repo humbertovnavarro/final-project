@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-module.exports = function rtmp(app, db) {
+const db = require('./db');
+module.exports = function rtmp(app) {
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;

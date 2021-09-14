@@ -5,7 +5,8 @@ const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
-module.exports = function routes(app, db) {
+const db = require('./db');
+module.exports = function routes(app) {
   app.get('/api/channel/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     if (id < 0 || Number.isNaN(id)) {
