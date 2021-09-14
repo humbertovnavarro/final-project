@@ -6,10 +6,13 @@ module.exports = function rtmp(app, db) {
     const { name: channelId, clientid: clientId, addr: ip, psk: streamKey } = req.body;
     if (!channelId || !clientId || !ip || !streamKey) {
       res.sendStatus(404);
+      return;
     }
     if (channelId.match(/^[a-zA-Z0-9_]+$/) === null) {
       res.sendStatus(404);
+      return;
     }
+    res.sendStatus(201);
   });
 
   app.post('/streams/on_publish_done', (req, res, next) => {
