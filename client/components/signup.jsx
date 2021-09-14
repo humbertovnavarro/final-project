@@ -40,7 +40,7 @@ class SignUp extends React.Component {
         for (const key in data) {
           localStorage.setItem(key, data[key]);
         }
-        this.props.setUser(data.token, data.userId);
+        this.props.setUser(data);
         this.props.toggleModal(null);
       }).catch(err => { console.error(err); });
   }

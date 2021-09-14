@@ -113,6 +113,7 @@ module.exports = function routes(app, db) {
           const token = jwt.sign(encode, process.env.TOKEN_SECRET);
           const payload = {
             userId: data.rows[0].userId,
+            userName: req.body.userName,
             token: token
           };
           res.json(payload);
