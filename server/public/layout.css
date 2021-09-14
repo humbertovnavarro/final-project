@@ -25,3 +25,29 @@
 .space-between {
   justify-content: space-between;
 }
+
+.container {
+  margin: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.item-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.padding-top-half {
+  margin-top: 0.5rem;
+}
+
+.padding-bottom-half {
+  margin-bottom: 0.5rem;
+}
