@@ -5,22 +5,23 @@ import Channel from './pages/channel';
 import Browse from './pages/browse';
 import Header from './components/header';
 import SignUp from './components/signup';
+import SignIn from './components/signin';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    const user = JSON.parse(localStorage.getItem('user')) || {};
     this.state = {
       route: parseRoute(window.location.hash),
-      jwt: null,
-      loggingIn: false
+      user: user,
+      modal: null
     };
-    this.toggleLogin = this.toggleLogin.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.setUser = this.setUser.bind(this);
   }
 
-  setUser(token) {
+  setUser(data) {
     this.setState({
-      jwt: token,
-      loggingIn: false
+      user: data
     });
   }
 
@@ -33,22 +34,27 @@ export default class App extends React.Component {
     });
     window.addEventListener('click', e => {
       if (e.target.matches('.modal-container')) {
-        this.toggleLogin();
+        this.toggleModal(null);
       }
     });
   }
 
-  toggleLogin() {
+  toggleModal(modal) {
     this.setState({
-      loggingIn: !this.state.loggingIn
+      modal: modal
     });
   }
 
   renderModal() {
-    if (this.state.loggingIn) {
-      return <SignUp setUser={this.setUser} toggleLogin={this.toggleLogin}/>;
+    const modal = this.state.modal;
+    switch (modal) {
+      case 'sign-up':
+        return <SignUp toggleModal={this.toggleModal} setUser={this.setUser} />;
+      case 'sign-in':
+        return <SignIn toggleModal={this.toggleModal} setUser={this.setUser} />;
+      default:
+        return null;
     }
-    return null;
   }
 
   renderContent() {
@@ -65,14 +71,15 @@ export default class App extends React.Component {
 
   render() {
     const contextValue = {
-      route: this.state.route
+      route: this.state.route,
+      user: this.state.user
     };
     const modal = this.renderModal();
     return (
       <>
       {modal}
       <AppContext.Provider value={contextValue}>
-        <Header toggleLogin={this.toggleLogin} />
+        <Header toggleModal={this.toggleModal} />
         <div id="content">
           {this.renderContent()}
         </div>

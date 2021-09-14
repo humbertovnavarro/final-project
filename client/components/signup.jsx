@@ -15,30 +15,32 @@ class SignUp extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    const target = document.activeElement.id;
+    if (target === 'sign-in') {
+      this.props.toggleModal('sign-in');
+      return;
+    }
     const identity = e.target.username.value;
     const password = e.target.password.value;
     const email = e.target.email.value;
-    const method = document.activeElement.name;
-    if (method === 'signup') {
-      const req = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ userName: identity, password: password, email: email })
-      };
-      fetch('/api/register', req)
-        .then(res => res.json())
-        .then(data => {
-          if (data.error) {
-            this.setState({ error: data.error });
-            return;
-          }
-          const token = JSON.stringify(data.token);
-          localStorage.setItem(data.userId, token);
-          this.props.setUser(data.token);
-        }).catch(err => { console.error(err); });
-    }
+    const req = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userName: identity, password: password, email: email })
+    };
+    fetch('/api/register', req)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          this.setState({ error: data.error });
+          return;
+        }
+        localStorage.setItem('user', JSON.stringify(data));
+        this.props.setUser(data);
+        this.props.toggleModal(null);
+      }).catch(err => { console.error(err); });
   }
 
   handleChange(e) {
@@ -57,9 +59,6 @@ class SignUp extends React.Component {
           </div>
           <div>
             <p className="red text-center">{this.state.error}</p>
-          </div>
-          <div>
-            {this.state.image ? <img src={this.state.image} /> : null}
           </div>
           <div>
             <label htmlFor="username">Username</label>
@@ -85,7 +84,10 @@ class SignUp extends React.Component {
             <input type="email" id="email" name="email" placeholder="required"></input>
           </div>
           <div className="row justify-center">
-            <input name="signup" type="submit" value="Sign Up" className="custom-button"/>
+            <button id="sign-up" className="custom-button" type="submit" name="signup">Signup</button>
+          </div>
+          <div className="row justify-center">
+            <button id="sign-in" className="custom-button" onClick={this.handleClick}>Sign In Instead</button>
           </div>
         </form>
       </div>

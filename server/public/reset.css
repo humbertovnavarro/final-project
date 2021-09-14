@@ -23,6 +23,11 @@ a:visited {
   color: inherit;
 }
 
+a:active {
+  transform: scale(1.1);
+  color: inherit;
+}
+
 p {
   margin: 0;
 }

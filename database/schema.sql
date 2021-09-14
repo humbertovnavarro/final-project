@@ -9,7 +9,7 @@ CREATE TABLE "public"."users" (
 	"userName" TEXT NOT NULL,
 	"email" TEXT NOT NULL,
 	"hash" TEXT NOT NULL,
-	"streamKey" TEXT NOT NULL,
+	"streamKey" TEXT,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 ) WITH (
   OIDS=FALSE

@@ -80,10 +80,12 @@ form #signup {
   color: rgb(255, 0, 0);
 }
 
-.header {
+.header > .container {
   position: --webkit-sticky;
   position: sticky;
-  padding: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
   font-family: 'Righteous', cursive;
   width: 100%;
   height: 4rem;
@@ -99,6 +101,19 @@ form #signup {
   font-size: 3rem;
 }
 
+.avatar {
+  margin: 0.25rem;
+  border-radius: 5rem;
+  background-color: #f3f3f3;
+  width: 5rem;
+  height: 5rem;
+}
+
+.header .avatar {
+  width: 3rem;
+  height: 3rem;
+}
+
 .player {
   background-color: #2d2424;
   max-width: 100%;
@@ -112,40 +127,12 @@ form #signup {
   flex-grow: 1;
 }
 
-.row {
-  display: flex;
-}
-
-.container {
-  width: 100%;
-}
-
-.item-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
 .cyan {
   background-color: #0d7377;
 }
 
-.column-full {
-  width: 100%;
-}
-
 .rounded {
   border-radius: 0.5rem;
-}
-
-.avatar {
-  margin: 0.25rem;
-  border-radius: 5rem;
-  background-color: #f3f3f3;
-  width: 5rem;
-  height: 5rem;
 }
 
 .stream-card-footer .avatar {
@@ -228,6 +215,11 @@ form #signup {
   left: 0.15rem;
   top: 0.54rem;
   color: #000;
+}
+
+#sign-in {
+  transform: scale(0.8);
+  margin-top: 2rem;
 }
 
 @media screen and (max-width: 768px) {

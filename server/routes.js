@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
+const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
 module.exports = function routes(app, db) {
   app.get('/api/channel/:id', (req, res, next) => {
@@ -100,20 +101,19 @@ module.exports = function routes(app, db) {
         return;
       }
       argon2.hash(req.body.password).then(hash => {
-        const streamKey = new StreamKey();
         const sql = `
-          insert into "users" ("userName", "hash", "email", "streamKey")
-          values ($1, $2, $3, $4) returning "userId";
+          insert into "users" ("userName", "hash", "email")
+          values ($1, $2, $3) returning "userId";
         `;
-        const params = [req.body.userName, hash, req.body.email, streamKey.hash];
+        const params = [req.body.userName, hash, req.body.email];
         db.query(sql, params).then(data => {
           const encode = {
-            userId: data.rows[0].userid,
-            streamKey: streamKey.key,
-            streamKeyExpires: streamKey.expires
+            userId: data.rows[0].userId
           };
           const token = jwt.sign(encode, process.env.TOKEN_SECRET);
           const payload = {
+            userId: data.rows[0].userId,
+            userName: req.body.userName,
             token: token
           };
           res.json(payload);
@@ -126,4 +126,64 @@ module.exports = function routes(app, db) {
       });
   });
 
+  app.post('/api/login', (req, res, next) => {
+    const { password, userName } = req.body;
+    if (!password || !userName) {
+      res.status(400).json({ error: 'Missing password or username' });
+      return;
+    }
+    const sql = `
+      select "userId", "userName", "hash" from "users" where "userName" = $1;
+    `;
+    const params = [userName];
+    db.query(sql, params)
+      .then(data => {
+        const { hash } = data.rows[0];
+        argon2.verify(hash, password).then(match => {
+          if (!match) {
+            res.status(401).json({ error: 'Bad Login' });
+            return;
+          }
+          const { userId } = data.rows[0];
+          const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET);
+          const payload = {
+            userId: userId,
+            userName: userName,
+            token: token
+          };
+          res.status(200).json(payload);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      });
+  });
+  app.get('/api/genkey', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const streamKey = new StreamKey();
+    const sql = `
+      update "users" set "streamKey" = $1 where "userId" = $2
+      returning "userId";
+    `;
+    const params = [streamKey.hash, userId];
+    db.query(sql, params).then(data => {
+      if (data.rows.length === 0) {
+        res.status(500).json({ error: 'An unexpected error occured' });
+        throw new Error('Corrupted token data.');
+      }
+      if (data.rows.length > 1) {
+        res.status(500).json({ error: 'An unexpected error occured' });
+        throw new Error('Corrupted database data.');
+      }
+      const payload = {
+        streamKey: streamKey.key,
+        streamKeyExpires: streamKey.expires
+      };
+      res.json(payload);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
 };
