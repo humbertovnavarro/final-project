@@ -41,14 +41,20 @@ export default class Channel extends React.Component {
     const dummyPlayer = <div className='player rounded'></div>
     return (
       <>
-        { (this.state.isLive && this.state.channelId !== null) ? player : dummyPlayer }
-        <div className="row item-center">
-          <Avatar
-            channelId={this.context.route.params.get('channelId')}
-            isLive={this.state.isLive}
-          />
-          <p>{this.state.channelName}</p>
+      <div className="channel">
+        <div className="container">
+            {(this.state.isLive && this.state.channelId !== null) ? player : dummyPlayer}
+            <div className="profile rounded">
+              <div className="row item-center">
+                <Avatar
+                  channelId={this.context.route.params.get('channelId')}
+                  isLive={this.state.isLive}
+                />
+                <p>{this.state.channelName}</p>
+              </div>
+            </div>
         </div>
+      </div>
       </>
     );
   }

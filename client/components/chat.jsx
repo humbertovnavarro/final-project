@@ -1,6 +1,7 @@
 import React from "react";
 import { io } from "socket.io-client";
 import AppContext from "../app-context";
+import Message from './message'
 class Chat extends React.Component {
   static contextType = AppContext;
   constructor(props) {
@@ -37,7 +38,7 @@ class Chat extends React.Component {
     fetch(`/api/channel/${this.props.room}/messages`)
       .then(res => res.json())
       .then(messages => {
-        this.setState({ messages });
+        this.setState({ messages }, () => this.bottom.scrollIntoView());
         this.socket = io('', params);
         this.socket.on('message', (message) => {
           const messages = this.state.messages;
@@ -54,12 +55,13 @@ class Chat extends React.Component {
     if(this.context.user.token) {
       return;
     } else {
+      document.activeElement.blur();
       this.props.toggleModal('sign-up');
     }
   }
   handleInput(e) {
-    if(e.target.value.length > 200) {
-      this.setState({error: 'Message must be less than 200 characters.'});
+    if(e.target.value.length >= 500) {
+      this.setState({error: 'Message must be less than 500 characters.'});
     } else {
       this.setState({error: ''});
     }
@@ -68,10 +70,7 @@ class Chat extends React.Component {
   render() {
     const messages = this.state.messages.map((message) => {
       return (
-        <div className="message" key={message.messageId}>
-          <span className="message-username">{message.userName}</span>
-          <span className="message-content">{message.content}</span>
-        </div>
+        <Message message={message} key={message.messageId}/>
       );
     });
     return (
