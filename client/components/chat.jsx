@@ -12,9 +12,12 @@ class Chat extends React.Component {
       error: ''
     };
     this.handleInput = this.handleInput.bind(this);
-    this.user = this.state.user;
+    this.bottom = React.createRef();
   }
   connnect() {
+    if(this.socket) {
+      this.socket.disconnect();
+    }
     const params = {
       auth: {
         token: this.props.user.token || 'anonymous',
@@ -23,10 +26,10 @@ class Chat extends React.Component {
     }
     this.socket = io('', params);
     this.socket.on('message', (message) => {
-      const messages = this.state.messages;
+      const messages = this.state.messages.splice(0, this.state.messages.length);
       messages.push(message);
       this.setState({ messages });
-      this.bottom.scrollIntoView();
+      this.bottom.current.scrollIntoView();
     });
     this.socket.on('error', (message) => {
       console.error(message);
@@ -38,7 +41,6 @@ class Chat extends React.Component {
     }
   }
   componentDidMount() {
-    this.bottom = document.getElementById("bottom");
     window.addEventListener('keydown', (e) => {
       if (e.shiftKey) {
         return;
@@ -55,7 +57,7 @@ class Chat extends React.Component {
     fetch(`/api/channel/${this.props.room}/messages`)
       .then(res => res.json())
       .then(messages => {
-        this.setState({ messages }, () => this.bottom.scrollIntoView());
+        this.setState({ messages }, () => this.bottom.current.scrollIntoView());
         this.connnect();
       });
   }
@@ -77,7 +79,7 @@ class Chat extends React.Component {
       <div className="chat">
         <div className="message-container">
           {messages}
-          <div id="bottom"></div>
+          <div ref={this.bottom}></div>
         </div>
         <p className="red">{this.state.error}</p>
         <textarea onInput={this.handleInput} value={this.state.userMessage}></textarea>
