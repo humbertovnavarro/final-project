@@ -117,8 +117,9 @@ form #signup {
 .player {
   background-color: #2d2424;
   max-width: 100%;
+  min-width: max-content;
+  min-height: 80vh;
   margin-bottom: 0.5rem;
-  max-height: 75vh;
 }
 
 #content {
@@ -235,7 +236,7 @@ form #signup {
   resize: none;
   color: white;
   background-color: #ffffff25;
-  width: 90%;
+  width: 95%;
   height: 4rem;
   border-radius: 0.5rem;
 }
@@ -244,7 +245,7 @@ form #signup {
   padding: 1rem;
   width: 100%;
   overflow-wrap: break-word;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: scroll;
 }
 

@@ -42,7 +42,7 @@ module.exports = function rtmp(app) {
       });
   });
 
-  app.post('/streams/on_publish_done', (req, res, next) => {
+  app.post('/streams/on_done', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;
     }

@@ -4,9 +4,18 @@ const authorize = require('./io-auth');
 function chat(io) {
   io.on('connection', function (socket) {
     authorize(socket);
-    socket.on('message', message => {
+    socket.on('message', data => {
+      const message = data.trim();
       if (typeof message !== 'string') {
         socket.emit('error', 'Message must be a string');
+        return;
+      }
+      if(message.length <= 0) {
+        socket.emit('error', 'Message must be at least 1 character long');
+        return;
+      }
+      if(message.length > 200) {
+        socket.emit('error', 'Message must be less than 200 characters');
         return;
       }
       if (socket.userId === null) {

@@ -44,7 +44,7 @@ export default class Channel extends React.Component {
         { (this.state.isLive && this.state.channelId !== null) ? player : dummyPlayer }
         <div className="row item-center">
           <Avatar
-            channelId={this.state.channelId}
+            channelId={this.context.route.params.get('channelId')}
             isLive={this.state.isLive}
           />
           <p>{this.state.channelName}</p>

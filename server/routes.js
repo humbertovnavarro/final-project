@@ -7,6 +7,19 @@ const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 module.exports = function routes(app) {
+  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req,res,next) => {
+    const sql = `
+      select "userId" from "users" where LOWER("userName") = $1
+    `
+    db.query(sql, [req.params.name.toLowerCase()])
+    .then( data => {
+      if(data.rows.length === 0) {
+        res.redirect('/404');
+      } else {
+        res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
+      }
+    });
+  });
 
   app.get('/api/channel/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
@@ -120,10 +133,11 @@ module.exports = function routes(app) {
       }
       argon2.hash(req.body.password).then(hash => {
         const sql = `
-          insert into "users" ("userName", "hash", "email")
-          values ($1, $2, $3) returning "userId";
+          insert into "users" ("userName", "hash", "email", "color")
+          values ($1, $2, $3, $4) returning "userId";
         `;
-        const params = [req.body.userName, hash, req.body.email];
+        const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        const params = [req.body.userName, hash, req.body.email, color];
         db.query(sql, params).then(data => {
           const encode = {
             userId: data.rows[0].userId

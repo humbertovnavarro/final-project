@@ -11,6 +11,7 @@ CREATE TABLE "public"."users" (
 	"hash" TEXT NOT NULL,
 	"streamKey" TEXT,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
+	"color" TEXT NOT NULL DEFAULT '#ff0000',
 ) WITH (
   OIDS=FALSE
 );

@@ -7,18 +7,23 @@ class Chat extends React.Component {
     super(props);
     this.state = {
       messages: [],
-      userMessage: ''
+      userMessage: '',
+      error: ''
     };
     this.handleInput = this.handleInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
+    this.bottom = document.getElementById("bottom");
     window.addEventListener('keydown', (e) => {
-      if (e.shiftKey || this.state.userMessage.length === 0) {
+      if (e.shiftKey) {
         return;
       }
       if (e.key === 'Enter') {
         e.preventDefault();
+        if(this.state.userMessage.trim().length === 0) {
+          return;
+        }
         this.socket.emit('message', this.state.userMessage);
         this.setState({userMessage: ''});
       }
@@ -38,6 +43,10 @@ class Chat extends React.Component {
           const messages = this.state.messages;
           messages.push(message);
           this.setState({ messages });
+          this.bottom.scrollIntoView();
+        });
+        this.socket.on('error', (message) => {
+          console.error(message);
         });
       });
   }
@@ -49,6 +58,11 @@ class Chat extends React.Component {
     }
   }
   handleInput(e) {
+    if(e.target.value.length > 200) {
+      this.setState({error: 'Message must be less than 200 characters.'});
+    } else {
+      this.setState({error: ''});
+    }
     this.setState({userMessage: e.target.value});
   }
   render() {
@@ -65,8 +79,10 @@ class Chat extends React.Component {
         <div className="chat">
           <div className="message-container">
             {messages}
+            <div id="bottom"></div>
           </div>
         </div>
+        <p className="red">{this.state.error}</p>
         <textarea onClick={this.handleClick} onInput={this.handleInput} value={this.state.userMessage}></textarea>
       </div>
     );
