@@ -74,16 +74,15 @@ class Chat extends React.Component {
       );
     });
     return (
-      <div className="chat-container">
-        <div className="chat">
-          <div className="message-container">
-            {messages}
-            <div id="bottom"></div>
-          </div>
+      <div className="chat">
+        <div className="message-container">
+          {messages}
+          <div id="bottom"></div>
         </div>
         <p className="red">{this.state.error}</p>
         <textarea onInput={this.handleInput} value={this.state.userMessage}></textarea>
       </div>
+
     );
   }
 }

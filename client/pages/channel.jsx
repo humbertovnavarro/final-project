@@ -2,6 +2,7 @@ import React from 'react';
 import AppContext from '../app-context';
 import Avatar from '../components/avatar';
 import ShakaPlayer from 'shaka-player-react';
+import Chat from '../components/chat';
 import 'shaka-player/dist/controls.css';
 export default class Channel extends React.Component {
   static contextType = AppContext;
@@ -42,7 +43,7 @@ export default class Channel extends React.Component {
     return (
       <>
       <div className="channel">
-        <div className="container">
+        <div className="channel-container">
             {(this.state.isLive && this.state.channelId !== null) ? player : dummyPlayer}
             <div className="profile rounded">
               <div className="row item-center">
@@ -54,6 +55,7 @@ export default class Channel extends React.Component {
               </div>
             </div>
         </div>
+        <Chat user={this.context.user} toggleModal={this.toggleModal} room={this.context.route.params.get('channelId')} />
       </div>
       </>
     );
