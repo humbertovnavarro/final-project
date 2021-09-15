@@ -1,5 +1,6 @@
 const crypto = require('crypto');
-module.exports = function rtmp(app, db) {
+const db = require('./db');
+module.exports = function rtmp(app) {
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
       return;
@@ -39,16 +40,5 @@ module.exports = function rtmp(app, db) {
         console.error(err);
         res.sendStatus(500);
       });
-  });
-
-  app.post('/streams/on_publish_done', (req, res, next) => {
-    if (req.ip !== '::ffff:127.0.0.1') {
-      return;
-    }
-    const { clientid: clientId } = req.body;
-    const sql = `
-    delete from streams where "clientId" = $1;
-  `;
-    db.query(sql, [clientId]);
   });
 };

@@ -5,7 +5,22 @@ const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
-module.exports = function routes(app, db) {
+const db = require('./db');
+module.exports = function routes(app) {
+  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req,res,next) => {
+    const sql = `
+      select "userId" from "users" where LOWER("userName") = $1
+    `
+    db.query(sql, [req.params.name.toLowerCase()])
+    .then( data => {
+      if(data.rows.length === 0) {
+        res.redirect('/404');
+      } else {
+        res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
+      }
+    });
+  });
+
   app.get('/api/channel/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     if (id < 0 || Number.isNaN(id)) {
@@ -32,6 +47,22 @@ module.exports = function routes(app, db) {
           res.status(500).json({ error: 'An unexpected error occured' });
         });
     });
+  });
+
+  app.get('/api/channel/:id/messages', (req, res, next) => {
+    const sql = `
+      select * from "messages" where "channelId" = $1 order by "createdAt" asc limit 100;
+    `;
+    const params = [Number.parseInt(req.params.id)];
+    db.query(sql, params)
+      .then(data => {
+        res.json(data.rows);
+      }
+      ).catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      }
+      );
   });
 
   app.get('/api/channels/live/:offset?', (req, res, next) => {
@@ -102,10 +133,11 @@ module.exports = function routes(app, db) {
       }
       argon2.hash(req.body.password).then(hash => {
         const sql = `
-          insert into "users" ("userName", "hash", "email")
-          values ($1, $2, $3) returning "userId";
+          insert into "users" ("userName", "hash", "email", "color")
+          values ($1, $2, $3, $4) returning "userId";
         `;
-        const params = [req.body.userName, hash, req.body.email];
+        const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        const params = [req.body.userName, hash, req.body.email, color];
         db.query(sql, params).then(data => {
           const encode = {
             userId: data.rows[0].userId
@@ -159,6 +191,7 @@ module.exports = function routes(app, db) {
         res.status(500).json({ error: 'An unexpected error occured' });
       });
   });
+
   app.get('/api/genkey', authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
     const streamKey = new StreamKey();

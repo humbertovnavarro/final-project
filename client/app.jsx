@@ -80,8 +80,10 @@ export default class App extends React.Component {
       {modal}
       <AppContext.Provider value={contextValue}>
         <Header toggleModal={this.toggleModal} />
-        <div id="content">
-          {this.renderContent()}
+        <div className="page">
+            <div id="content">
+              {this.renderContent()}
+            </div>
         </div>
       </AppContext.Provider>
       </>
