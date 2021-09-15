@@ -153,11 +153,6 @@ form #signup {
   box-shadow: 0 0 4px 2px  rgba(0, 0, 0, 0.226);
 }
 
-.profile {
-  display: flex;
-  font-family: 'Ramabhadra', sans-serif;
-}
-
 .profile span {
   margin: 1rem;
 }
@@ -184,6 +179,10 @@ form #signup {
   align-items: center;
   background-color: #1b1717be;
   flex-basis: 10%;
+}
+.profile {
+  background-color: #0d7377;
+  margin: 0.25rem;
 }
 
 .browse {
@@ -245,8 +244,15 @@ form #signup {
   padding: 1rem;
   width: 100%;
   overflow-wrap: break-word;
+  white-space: pre-line;
   max-height: 80vh;
   overflow-y: scroll;
+}
+
+.emote {
+  transform: translateY(0.5rem);
+  width: 2rem;
+  height: 2rem;
 }
 
 .message {

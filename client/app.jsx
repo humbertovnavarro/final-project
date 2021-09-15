@@ -85,7 +85,7 @@ export default class App extends React.Component {
             <div id="content">
               {this.renderContent()}
             </div>
-            {this.state.route.path === 'channel' ? <Chat toggleModal={this.toggleModal} room={this.state.route.params.get('channelId')} /> : null}
+            {this.state.route.path === 'channel' ? <Chat user={this.state.user} toggleModal={this.toggleModal} room={this.state.route.params.get('channelId')} /> : null}
         </div>
       </AppContext.Provider>
       </>

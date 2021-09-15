@@ -8,9 +8,9 @@ function authorize(socket) {
     socket.disconnect();
     return;
   }
-  if (!token) {
-    socket.userId = null;
-    socket.userName = 'Anonymous';
+  if (token === 'anonymous') {
+    socket.userId = 0;
+    socket.userName = 'Anonymous' + Math.floor(Math.random() * 100000);
     socket.room = room;
     socket.join(room);
   } else {

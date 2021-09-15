@@ -12,7 +12,30 @@ class Chat extends React.Component {
       error: ''
     };
     this.handleInput = this.handleInput.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.user = this.state.user;
+  }
+  connnect() {
+    const params = {
+      auth: {
+        token: this.props.user.token || 'anonymous',
+        room: this.props.room
+      }
+    }
+    this.socket = io('', params);
+    this.socket.on('message', (message) => {
+      const messages = this.state.messages;
+      messages.push(message);
+      this.setState({ messages });
+      this.bottom.scrollIntoView();
+    });
+    this.socket.on('error', (message) => {
+      console.error(message);
+    });
+  }
+  componentDidUpdate(prevProps) {
+    if(prevProps.user.token !== this.props.user.token) {
+      this.connnect();
+    }
   }
   componentDidMount() {
     this.bottom = document.getElementById("bottom");
@@ -29,35 +52,12 @@ class Chat extends React.Component {
         this.setState({userMessage: ''});
       }
     });
-    const params = {
-      auth: {
-        token: this.context.user.token,
-        room: this.props.room
-      }
-    }
     fetch(`/api/channel/${this.props.room}/messages`)
       .then(res => res.json())
       .then(messages => {
         this.setState({ messages }, () => this.bottom.scrollIntoView());
-        this.socket = io('', params);
-        this.socket.on('message', (message) => {
-          const messages = this.state.messages;
-          messages.push(message);
-          this.setState({ messages });
-          this.bottom.scrollIntoView();
-        });
-        this.socket.on('error', (message) => {
-          console.error(message);
-        });
+        this.connnect();
       });
-  }
-  handleClick(e) {
-    if(this.context.user.token) {
-      return;
-    } else {
-      document.activeElement.blur();
-      this.props.toggleModal('sign-up');
-    }
   }
   handleInput(e) {
     if(e.target.value.length >= 500) {
@@ -82,7 +82,7 @@ class Chat extends React.Component {
           </div>
         </div>
         <p className="red">{this.state.error}</p>
-        <textarea onClick={this.handleClick} onInput={this.handleInput} value={this.state.userMessage}></textarea>
+        <textarea onInput={this.handleInput} value={this.state.userMessage}></textarea>
       </div>
     );
   }

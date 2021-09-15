@@ -51,7 +51,7 @@ module.exports = function routes(app) {
 
   app.get('/api/channel/:id/messages', (req, res, next) => {
     const sql = `
-      select * from "messages" where "channelId" = $1 order by "createdAt" desc limit 100;
+      select * from "messages" where "channelId" = $1 order by "createdAt" asc limit 100;
     `;
     const params = [Number.parseInt(req.params.id)];
     db.query(sql, params)

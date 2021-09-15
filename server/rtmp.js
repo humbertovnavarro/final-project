@@ -41,15 +41,4 @@ module.exports = function rtmp(app) {
         res.sendStatus(500);
       });
   });
-
-  app.post('/streams/on_done', (req, res, next) => {
-    if (req.ip !== '::ffff:127.0.0.1') {
-      return;
-    }
-    const { clientid: clientId } = req.body;
-    const sql = `
-    delete from streams where "clientId" = $1;
-  `;
-    db.query(sql, [clientId]);
-  });
 };
