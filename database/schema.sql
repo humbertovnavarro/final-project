@@ -31,6 +31,7 @@ CREATE TABLE "public"."streams" (
 CREATE TABLE "public"."messages" (
 	"messageId" serial,
 	"userId" integer NOT NULL,
+	"userName" TEXT NOT NULL,
 	"channelId" integer NOT NULL,
 	"content" TEXT NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',

@@ -5,6 +5,7 @@ import Channel from './pages/channel';
 import Browse from './pages/browse';
 import Header from './components/header';
 import SignUp from './components/signup';
+import Chat from './components/chat';
 import SignIn from './components/signin';
 export default class App extends React.Component {
   constructor(props) {
@@ -80,8 +81,11 @@ export default class App extends React.Component {
       {modal}
       <AppContext.Provider value={contextValue}>
         <Header toggleModal={this.toggleModal} />
-        <div id="content">
-          {this.renderContent()}
+        <div className="row">
+            <div id="content">
+              {this.renderContent()}
+            </div>
+            {this.state.route.path === 'channel' ? <Chat toggleModal={this.toggleModal} room={this.state.route.params.get('channelId')} /> : null}
         </div>
       </AppContext.Provider>
       </>
