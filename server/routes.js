@@ -7,18 +7,18 @@ const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 module.exports = function routes(app) {
-  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req,res,next) => {
+  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
       select "userId" from "users" where LOWER("userName") = $1
-    `
+    `;
     db.query(sql, [req.params.name.toLowerCase()])
-    .then( data => {
-      if(data.rows.length === 0) {
-        res.redirect('/404');
-      } else {
-        res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
-      }
-    });
+      .then(data => {
+        if (data.rows.length === 0) {
+          res.redirect('/404');
+        } else {
+          res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
+        }
+      });
   });
 
   app.get('/api/channel/:id', (req, res, next) => {
@@ -191,8 +191,8 @@ module.exports = function routes(app) {
         res.status(500).json({ error: 'An unexpected error occured' });
       });
   });
-
-  app.get('/api/genkey', authMiddleware, (req, res, next) => {
+  app.use(authMiddleware);
+  app.get('/api/genkey', (req, res, next) => {
     const userId = req.user.userId;
     const streamKey = new StreamKey();
     const sql = `
@@ -214,6 +214,19 @@ module.exports = function routes(app) {
         streamKeyExpires: streamKey.expires
       };
       res.json(payload);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.get('/api/user', (req, res, next) => {
+    const sql = `
+      select "userName", "email", "color", "streamKeyExpires" from "users" where "userId" = $1;
+    `;
+    const params = [req.user.userId];
+    db.query(sql, params).then(data => {
+      res.json(data.rows[0]);
     }).catch(err => {
       console.error(err);
       res.status(500).json({ error: 'An unexpected error occured' });

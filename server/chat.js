@@ -10,11 +10,11 @@ function chat(io) {
         socket.emit('error', 'Message must be a string');
         return;
       }
-      if(message.length <= 0) {
+      if (message.length <= 0) {
         socket.emit('error', 'Message must be at least 1 character long');
         return;
       }
-      if(message.length >= 500) {
+      if (message.length >= 500) {
         socket.emit('error', 'Message must be less than 500 characters');
         return;
       }
@@ -24,14 +24,15 @@ function chat(io) {
       }
       const sql = `
         insert into "messages"
-        ("userId", "channelId", "userName", "content")
-        values ($1, $2, $3, $4)
+        ("userId", "channelId", "userName", "content", "color")
+        values ($1, $2, $3, $4, $5)
         returning *;
       `;
-      const params = [socket.userId, socket.room, socket.userName, message];
+      const params = [socket.userId, socket.room, socket.userName, message, socket.color];
       db.query(sql, params)
         .then(data => {
-          io.sockets.in(socket.room).emit('message', data.rows[0]);
+          const payload = data.rows[0];
+          io.sockets.in(socket.room).emit('message', payload);
         }).catch(err => {
           console.error(err);
           socket.emit('error', 'An unexpected error has occured');
