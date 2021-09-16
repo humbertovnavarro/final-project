@@ -170,7 +170,7 @@ module.exports = function routes(app) {
       return;
     }
     const sql = `
-      select "userId", "userName", "hash" from "users" where "userName" = $1;
+      select "userId", "userName", "hash", "color", "streamKeyExpires" from "users" where "userName" = $1;
     `;
     const params = [userName];
     db.query(sql, params)
@@ -181,13 +181,9 @@ module.exports = function routes(app) {
             res.status(401).json({ error: 'Bad Login' });
             return;
           }
-          const { userId } = data.rows[0];
-          const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET);
-          const payload = {
-            userId: userId,
-            userName: userName,
-            token: token
-          };
+          const payload = data.rows[0];
+          const token = jwt.sign({ userId: payload.userId }, process.env.TOKEN_SECRET);
+          payload.token = token;
           res.status(200).json(payload);
         });
       })

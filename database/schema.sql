@@ -10,10 +10,11 @@ CREATE TABLE "public"."users" (
 	"email" TEXT NOT NULL,
 	"hash" TEXT NOT NULL,
 	"streamKey" TEXT,
-	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
-	"color" TEXT NOT NULL DEFAULT '#ff0000',
+	"streamKeyExpires" timestamp with time zone,
+	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
+	"color" TEXT NOT NULL DEFAULT '#ff0000'
 ) WITH (
-  OIDS=FALSE
+	OIDS=FALSE
 );
 
 CREATE TABLE "public"."streams" (
@@ -36,6 +37,7 @@ CREATE TABLE "public"."messages" (
 	"channelId" integer NOT NULL,
 	"content" TEXT NOT NULL,
 	"deleted" BOOLEAN NOT NULL DEFAULT 'false',
+	"color" TEXT NOT NULL DEFAULT '#ff0000',
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
 	CONSTRAINT "messages_pk" PRIMARY KEY ("messageId")
 ) WITH (

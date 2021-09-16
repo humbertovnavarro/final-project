@@ -16,7 +16,7 @@ class Header extends React.Component {
       this.context.logout();
     }
     if(!this.context.user.token) {
-      this.props.toggleModal('sign-up');
+      this.props.toggleModal('sign-in');
     }
   }
   render() {

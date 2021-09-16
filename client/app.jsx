@@ -11,6 +11,22 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     const user = JSON.parse(localStorage.getItem('user')) || {};
+    if(user) {
+      const req = {
+        method: 'GET',
+        headers: {
+          'X-Access-Token': user.token
+        }
+      };
+      fetch('/api/user', req)
+      .then(res => res.json())
+      .then(data => {
+        const newData = Object.assign(this.state.user, data);
+        this.setUser(newData);
+      }).catch(err => {
+        console.error(err);
+      });
+    }
     this.state = {
       route: parseRoute(window.location.hash),
       user: user,
@@ -28,9 +44,11 @@ export default class App extends React.Component {
   }
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('stream-key');
     this.setState({
       user: {}
     });
+    window.location.hash = '#browse';
   }
   componentDidMount() {
     window.addEventListener('hashchange', () => {
