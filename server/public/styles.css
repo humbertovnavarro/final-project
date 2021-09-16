@@ -92,10 +92,10 @@ form #signup {
   position: sticky;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.25rem;
+  padding-top: 0.35rem;
   font-family: 'Righteous', cursive;
   width: 100%;
-  height: 4rem;
+  height: 100%;
   background-color: #0d7377;
   text-shadow: 0 3px 3px #1b1717a8;
 }
@@ -117,8 +117,12 @@ form #signup {
 }
 
 .header .avatar {
-  width: 3rem;
-  height: 3rem;
+  margin: 0px;
+  width: 2.4rem;
+  height: 2.4rem;
+}
+.header label {
+  font-family: 'Raleway', sans-serif;
 }
 
 .player {
@@ -128,8 +132,12 @@ form #signup {
 }
 
 #content {
-  height: 92.5vh;
+  height: 94vh;
   flex-grow: 1;
+}
+
+.header {
+  height: 6vh;
 }
 
 #content:first-child {
@@ -340,15 +348,11 @@ form #signup {
   }
 
   .header {
-    height: 10vh;
+    height: 5vh;
   }
 
   .header .avatar {
     display: none;
-  }
-
-  .header .container {
-    height: 2rem;
   }
 
   .header * {

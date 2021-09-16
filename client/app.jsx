@@ -19,13 +19,19 @@ export default class App extends React.Component {
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.setUser = this.setUser.bind(this);
+    this.logout = this.logout.bind(this);
   }
   setUser(data) {
     this.setState({
       user: data
     });
   }
-
+  logout() {
+    localStorage.removeItem('user');
+    this.setState({
+      user: {}
+    });
+  }
   componentDidMount() {
     window.addEventListener('hashchange', () => {
       const route = parseRoute(window.location.hash);
@@ -81,7 +87,8 @@ export default class App extends React.Component {
   render() {
     const contextValue = {
       route: this.state.route,
-      user: this.state.user
+      user: this.state.user,
+      logout: this.logout
     };
     const modal = this.renderModal();
     return (

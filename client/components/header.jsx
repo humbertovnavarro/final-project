@@ -12,11 +12,11 @@ class Header extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(e) {
-    switch (e.target.id) {
-      case 'login':
-        if(!this.context.user)
-        this.props.toggleModal('sign-up');
-        break;
+    if(e.target.id === 'logout') {
+      this.context.logout();
+    }
+    if(!this.context.user.token) {
+      this.props.toggleModal('sign-up');
     }
   }
   render() {
@@ -24,6 +24,7 @@ class Header extends React.Component {
     <div className="user-context-menu">
       <a href="#dashboard">User Dashboard</a>
       <a href={`#channel?channelId=${this.context.user.userId}`}>My Channel</a>
+      <a id="logout" onClick={this.handleClick}>Logout</a>
     </div>
     :
     null;
