@@ -1,12 +1,17 @@
 require('dotenv/config');
 const fs = require('fs');
 const path = require('path');
-const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
+
 const db = require('./db');
+
+const validateField = require('./lib/validate-field.js');
+const StreamKey = require('./lib/stream-key');
+
 module.exports = function routes(app) {
+
   app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
       select "userId" from "users" where LOWER("userName") = $1
@@ -191,6 +196,7 @@ module.exports = function routes(app) {
         res.status(500).json({ error: 'An unexpected error occured' });
       });
   });
+
   app.use(authMiddleware);
   app.get('/api/genkey', (req, res, next) => {
     const userId = req.user.userId;
@@ -232,4 +238,26 @@ module.exports = function routes(app) {
       res.status(500).json({ error: 'An unexpected error occured' });
     });
   });
+
+  app.patch('/api/user/:field', (req, res, next) => {
+    const field = req.params.field;
+    const value = req.body.value;
+    if (!validateField(field, value)) {
+      res.status(400).json({ error: 'Invalid field or value' });
+      return;
+    }
+    const sql = `
+      update "users" set "${field}" = $1 where "userId" = $2
+      returning "userId", "userName", "email", "color", "streamKeyExpires";
+    `;
+    const params = [value, req.user.userId];
+    db.query(sql, params).then(data => {
+      res.status(200).json(data.rows[0]);
+    })
+      .catch(err => {
+        console.error(err);
+        res.status(500).json({ error: 'An unexpected error occured' });
+      });
+  });
+
 };
