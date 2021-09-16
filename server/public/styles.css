@@ -218,7 +218,7 @@ form #signup {
 }
 
 .browse {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 87vh;
   display: flex;
   align-items: center;
@@ -264,12 +264,12 @@ form #signup {
 
 .channel-container {
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .dashboard-container {
   height: 85vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .chat {
@@ -296,7 +296,7 @@ form #signup {
   white-space: pre-line;
   width: 100%;
   flex-basis: 93%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .emote {

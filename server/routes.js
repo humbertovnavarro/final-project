@@ -7,7 +7,7 @@ const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
 module.exports = function routes(app) {
-  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req, res, next) => {
+  app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
       select "userId" from "users" where LOWER("userName") = $1
     `;
