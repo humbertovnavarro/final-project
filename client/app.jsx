@@ -2,6 +2,7 @@ import React from 'react';
 import parseRoute from './parse-route';
 import AppContext from './app-context';
 import Channel from './pages/channel';
+import Dashboard from './pages/dashboard';
 import Browse from './pages/browse';
 import Header from './components/header';
 import SignUp from './components/signup';
@@ -13,12 +14,12 @@ export default class App extends React.Component {
     this.state = {
       route: parseRoute(window.location.hash),
       user: user,
-      modal: null
+      modal: null,
+      contextMenuOpen: false
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.setUser = this.setUser.bind(this);
   }
-
   setUser(data) {
     this.setState({
       user: data
@@ -36,6 +37,12 @@ export default class App extends React.Component {
       if (e.target.matches('.modal-container')) {
         this.toggleModal(null);
       }
+      if(e.target.id === 'user') {
+        this.setState({contextMenuOpen: true});
+      } else {
+        this.setState({contextMenuOpen: false});
+      }
+
     });
   }
 
@@ -64,6 +71,8 @@ export default class App extends React.Component {
         return <Channel />;
       case 'browse':
         return <Browse />;
+      case 'dashboard':
+        return <Dashboard />;
       default:
         return <Browse />;
     }
@@ -77,15 +86,15 @@ export default class App extends React.Component {
     const modal = this.renderModal();
     return (
       <>
-      {modal}
-      <AppContext.Provider value={contextValue}>
-        <Header toggleModal={this.toggleModal} />
-        <div className="page">
+        {modal}
+        <AppContext.Provider value={contextValue}>
+          <Header contextMenuOpen={this.state.contextMenuOpen} toggleModal={this.toggleModal} />
+          <div className="page">
             <div id="content">
               {this.renderContent()}
             </div>
-        </div>
-      </AppContext.Provider>
+          </div>
+        </AppContext.Provider>
       </>
     );
   }

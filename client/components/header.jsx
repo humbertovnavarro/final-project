@@ -1,22 +1,32 @@
 import React from 'react';
 import Avatar from './avatar';
 import AppContext from '../app-context';
+import UserContextMenu from './usercontext';
 class Header extends React.Component {
   static contextType = AppContext;
   constructor(props) {
     super(props);
+    this.state = {
+      contextMenuOpen: this.props.contextMenuOpen
+    };
     this.handleClick = this.handleClick.bind(this);
   }
-
   handleClick(e) {
     switch (e.target.id) {
       case 'login':
+        if(!this.context.user)
         this.props.toggleModal('sign-up');
         break;
     }
   }
-
   render() {
+    const contextMenu = this.props.contextMenuOpen ?
+    <div className="user-context-menu">
+      <a href="#dashboard">User Dashboard</a>
+      <a href={`#channel?channelId=${this.context.user.userId}`}>My Channel</a>
+    </div>
+    :
+    null;
     const button = (
       <>
       <label htmlFor="login">Login</label>
@@ -26,11 +36,11 @@ class Header extends React.Component {
     const user = (
       <>
       <label htmlFor="user">{this.context.user.userName}</label>
-      <button id="user">
+      <button id="user" onClick={this.handleClick}>
         <Avatar channelId={this.context.user.userId}></Avatar>
       </button>
+      {contextMenu}
       </>
-
     );
     return (
       <div className="header">
