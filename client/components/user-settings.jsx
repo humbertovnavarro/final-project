@@ -27,6 +27,7 @@ class UserSettings extends React.Component {
     fetch("/api/user", req)
     .then(res => res.json())
     .then(data => {
+      data.streamKey = data.streamKey || "";
       this.setState(data);
     });
   }
@@ -88,7 +89,7 @@ class UserSettings extends React.Component {
         fetch("/api/genkey", req)
           .then(res => res.json())
           .then(data => {
-            alert('Stream key regenerated.');
+            alert('Stream key generated.');
             this.setState({
               streamKey: data.streamKey
             });
@@ -142,7 +143,7 @@ class UserSettings extends React.Component {
             <button data-action="copy" className="full-width" onClick={this.handleClick}>
               <input name="streamKey" onChange={this.handleChange} value={this.state.streamKey} />
             </button>
-            <input data-action="regen" type="submit" value="Regen" />
+            <input data-action="regen" type="submit" value="Generate" />
           </div>
         </form>
       </div>
