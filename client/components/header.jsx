@@ -6,9 +6,6 @@ class Header extends React.Component {
   static contextType = AppContext;
   constructor(props) {
     super(props);
-    this.state = {
-      contextMenuOpen: this.props.contextMenuOpen
-    };
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick(e) {
