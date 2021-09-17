@@ -30,5 +30,13 @@
         "error": "UserId must be a positive number."
       }
     ]
+  },
+  "color": {
+    "regex": [
+      {
+        "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+        "error": "Color must be a valid hex color."
+      }
+    ]
   }
 }

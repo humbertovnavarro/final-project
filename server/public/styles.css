@@ -196,6 +196,13 @@ input {
   background-color: #0d7377;
 }
 
+#color-form > input {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+}
+
+
 .cyan {
   background-color: #0d7377;
 }
@@ -347,12 +354,25 @@ input {
 }
 
 .message {
+  padding: 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
   font-family: 'Raleway', sans-serif;
+}
+
+.message-dark {;
+  background-color: #323232;
+  color: #fff;
+}
+
+.message-light {
+  background-color: rgb(255, 255, 255);
+  color: black;
 }
 
 .message-username {
   margin-right: 0.25rem;
-  color: red;
 }
 
 ::-webkit-scrollbar {
@@ -427,5 +447,13 @@ input {
 
   .channel {
     flex-direction: column;
+  }
+
+  .column-half {
+    width: 100%;
+  }
+  .line-right {
+    padding: none;
+    border-right: none;
   }
 }

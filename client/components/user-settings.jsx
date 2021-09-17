@@ -8,6 +8,7 @@ class UserSettings extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
+      color: '#000000',
       userName: "",
       password: "",
       passwordConfirm: "",
@@ -34,10 +35,33 @@ class UserSettings extends React.Component {
       [e.target.name]: e.target.value
     });
   }
+  updateField(field, value) {
+    const payload = {
+      [field]: value
+    };
+    console.log(payload);
+    const req = {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        "X-Access-Token": this.context.user.token
+      },
+      body: JSON.stringify(payload)
+    }
+    console.log(req);
+    fetch(`/api/user/${field}`, req)
+    .catch(err => {
+      alert('An unkown error occured.');
+      console.error(err);
+    });
+  }
   handleSubmit(e) {
     e.preventDefault();
     const action = e.target.dataset.action;
     switch(action) {
+      case "color":
+        this.updateField('color', this.state.color);
+        break;
       case "userName":
         break;
       case "email":
@@ -48,9 +72,13 @@ class UserSettings extends React.Component {
         const subAction = document.activeElement.dataset.action;
         console.log(subAction);
         if(subAction !== 'regen') {
-          navigator.clipboard.write(this.state.streamKey)
-            .then(() => alert('Copied to clipboard'))
-            .catch(err => console.error(err));
+          navigator.clipboard.writeText(this.state.streamKey)
+          .then( () => {
+            alert('Stream key copied to clipboard.');
+          })
+          .catch(err => {
+            console.error("Could not copy to clipboard");
+          });
           break;
         }
         const req = {
@@ -75,10 +103,17 @@ class UserSettings extends React.Component {
     return (
       <div className="user-settings">
         <h1>User Settings</h1>
-        <div className="row">
+        <div className="row item-center">
           <Avatar />
           <button>Upload</button>
         </div>
+        <form data-action="color" id="color-form" onSubmit={this.handleSubmit}>
+          <label htmlFor="color">Chat Color</label>
+          <div className="row">
+            <input type="color" name="color" id="color" onChange={this.handleChange} value={this.state.color} />
+            <input type="submit" value="Update" />
+          </div>
+        </form>
         <form data-action="userName" onSubmit={this.handleSubmit}>
           <label htmlFor="userName">Username</label>
           <div className="row">

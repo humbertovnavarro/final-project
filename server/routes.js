@@ -47,18 +47,21 @@ module.exports = function routes(app) {
     });
   });
 
-  app.patch('/api/user/:field', authMiddleware, (req, res, next) => {
+  app.post('/api/user/:field', authMiddleware, (req, res, next) => {
     const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
     if (field.error) {
       res.status(400).json({ error: field.error });
+      return;
     }
     const sql = `
-      update "users" set "${field.name}" = $1 where "userId" = $2
-      returning "userName", "email", "color", "streamKeyExpires";
+      update "users" set "${req.params.field}" = $1 where "userId" = $2;
     `;
     const params = [field.value, req.user.userId];
     db.query(sql, params).then(data => {
+      res.status(200).json({error: null});
+      return;
     }).catch(err => {
+      res.status(500).json({ error: 'An unexpected error occured' });
       console.error(err);
     });
   });

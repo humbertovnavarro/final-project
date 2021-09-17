@@ -1,4 +1,5 @@
 import React from "react";
+import luminance from "../lib/luminance";
 class Message extends React.Component {
   constructor(props) {
     super(props);
@@ -23,8 +24,10 @@ class Message extends React.Component {
     this.state.sanitized = this.state.sanitized.replaceAll(/(PogU)/g, '<img class="emote" src="/emotes/PogU.png" />');
   }
   render() {
+    const luminanceValue = luminance(this.props.message.color);
+    const luminanceClass = luminanceValue > 100.00 ? "message-dark" : "message-light";
     return(
-      <div className="message">
+      <div className={`message ${luminanceClass}`}>
         <span style={{color: this.props.message.color}}
         className="message-username">
           {this.props.message.userName + ' : '}
