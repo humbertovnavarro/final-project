@@ -1,20 +1,13 @@
 import React from 'react';
 import Avatar from './avatar';
+import ShakaPlayer from 'shaka-player-react';
 function Stream(props) {
   let style;
-  if (props.isLive) {
-    style = { backgroundImage: `url(${props.preview || 'images/placeholder.png'})` };
-  } else {
-    style = {};
-  }
   const hidden = props.isLive ? '' : 'hidden';
   return (
   <a href={`#channel?channelId=${props.channelId}`}>
   <div className="stream-card" style={style}>
-    <div className="stream-card-header">
-    </div>
-    <div className="stream-card-body">
-    </div>
+    <ShakaPlayer muted={true} autoPlay={false} src={`/live/${props.channelId}.mpd`}></ShakaPlayer>
     <div className="stream-card-footer">
       <div className="column-half">
         <div className="row item-center">

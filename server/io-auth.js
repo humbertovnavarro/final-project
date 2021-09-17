@@ -13,6 +13,7 @@ function authorize(socket) {
     socket.userName = 'Anonymous' + Math.floor(Math.random() * 100000);
     socket.room = room;
     socket.join(room);
+    socket.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
   } else {
     let decoded;
     try {
@@ -25,14 +26,25 @@ function authorize(socket) {
     }
     socket.userId = decoded.userId;
     const sql = `
-        select "userName" from "users" where "userId" = $1
-      `;
+      select "color", "userName" from "users" where "userId" = $1
+    `;
     db.query(sql, [socket.userId])
       .then(data => {
         socket.userName = data.rows[0].userName || 'Anonymous';
+        socket.color = data.rows[0].color;
       });
+    const sql2 = `
+      update "streams" set "viewers" = "viewers" + 1 where "channelId" = $1
+    `
+    db.query(sql2, [room]);
     socket.room = room;
     socket.join(room);
   }
+  socket.on("disconnect", () => {
+    const sql = `
+      update "streams" set "viewers" = "viewers" - 1 where "channelId" = $1
+    `
+    db.query(sql, [room]);
+  });
 }
 module.exports = authorize;

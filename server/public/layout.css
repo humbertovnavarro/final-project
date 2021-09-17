@@ -51,3 +51,20 @@
 .padding-bottom-half {
   margin-bottom: 0.5rem;
 }
+
+
+.full-width {
+  width: 100%;
+}
+
+.relative {
+  position: relative;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.padding-right {
+  padding-right: 1rem;
+}

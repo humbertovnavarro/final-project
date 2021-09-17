@@ -86,9 +86,6 @@ class SignUp extends React.Component {
           <div className="row justify-center">
             <button id="sign-up" className="custom-button" type="submit" name="signup">Signup</button>
           </div>
-          <div className="row justify-center">
-            <button id="sign-in" className="custom-button" onClick={this.handleClick}>Sign In Instead</button>
-          </div>
         </form>
       </div>
     </div>

@@ -4,13 +4,15 @@ body {
   font-family: 'Ramabhadra', sans-serif;
   overflow-y: clip;
 }
+.dummy-player-mobile {
+  display: none;
+}
 
 .page {
   overflow-x: clip;
   max-width: 100%;
   display: flex;
 }
-
 
 input {
   width: 100%;
@@ -60,27 +62,40 @@ input {
   align-items: center;
 }
 
-form {
+.modal form {
   width: 100%;
   height: 100%;
   padding: 2rem;
 }
 
-form input {
+.search input {
+  padding-left: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.modal form input {
   margin-bottom: 1rem;
 }
 
-form div:first-child {
+.modal form div:first-child {
   font-size: 2rem;
   margin-bottom: 2rem;
 }
 
-form label {
+.header label {
+  margin-left: 0.25rem;
+  font-family: 'Raleway', sans-serif;
+}
+
+.modal form label {
   font-size: 1.5rem;
   font-family: 'Raleway', sans-serif;
 }
 
-form #signup {
+.modal form #signup {
   margin-top: 2rem;
 }
 
@@ -88,25 +103,28 @@ form #signup {
   color: rgb(255, 0, 0);
 }
 
+.dummy-player {
+  height: 90%;
+  flex-grow: 1;
+}
+
 .header > .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: --webkit-sticky;
   position: sticky;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  padding-top: 0.25rem;
   font-family: 'Righteous', cursive;
   width: 100%;
-  height: 4rem;
+  height: 100%;
   background-color: #0d7377;
   text-shadow: 0 3px 3px #1b1717a8;
 }
 
 .header h2 {
   margin-left: 1.25rem;
-}
-
-.header .material-icons {
-  font-size: 3rem;
 }
 
 .avatar {
@@ -118,8 +136,9 @@ form #signup {
 }
 
 .header .avatar {
-  width: 3rem;
-  height: 3rem;
+  margin: 0;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .player {
@@ -129,11 +148,68 @@ form #signup {
 }
 
 #content {
-  padding: 0.25rem;
-  margin: 0.25rem;
-  height: 93vh;
+  height: 94vh;
   flex-grow: 1;
 }
+
+.header {
+  position: sticky;
+  z-index: 3;
+  height: 3rem;
+}
+
+#content:first-child {
+  padding: 0.5rem;
+}
+
+.dashboard-container {
+  padding: 1rem;
+  height: 85vh;
+  overflow-y: auto;
+}
+
+.line-right {
+  border-right: 2px solid #0d7377;
+}
+
+.user-context-menu {
+  z-index: 3;
+  position: absolute;
+  right:0;
+  top: 3rem;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Raleway', sans-serif;
+  text-align: left;
+}
+
+.user-context-menu a {
+  border: black solid 1px;
+  background-color: #0d7377;
+}
+
+.user-settings form input:first-child {
+  padding-left: 1rem;
+  border: 0;
+  border-radius: 5px 0 0 5px;
+  background-color: #323232;
+  color: white;
+}
+
+.user-settings form input:nth-child(2) {
+  width: 5rem;
+  border: 0;
+  border-radius: 0 5px 5px 0;
+  color: white;
+  background-color: #0d7377;
+}
+
+#color-form > input {
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+}
+
 
 .cyan {
   background-color: #0d7377;
@@ -148,6 +224,20 @@ form #signup {
   height: 3rem;
 }
 
+.stream-card .footer {
+  z-index: 2;
+}
+.stream-card .shaka-bottom-controls {
+  display: none !important;
+}
+.stream-card .shaka-play-button-container {
+  display: none !important;
+}
+.stream-card .shaka-video-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .avatar > img {
   width: 100%;
   height: 100%;
@@ -165,12 +255,13 @@ form #signup {
 }
 
 .stream-card {
+  position: relative;
   background-size: cover;
   min-width: calc(16rem * 1.5);
   min-height: calc(9rem * 1.5);
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  flex-direction: column-reverse;
+  justify-content: space-between;
   background-color: #0d7377;
   margin: 0.25rem;
 }
@@ -180,6 +271,9 @@ form #signup {
 }
 
 .stream-card-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
   font-family: 'Ramabhadra', sans-serif;
   padding: 0.25rem;
   display: flex;
@@ -187,12 +281,15 @@ form #signup {
   background-color: #1b1717be;
   flex-basis: 10%;
 }
+
 .profile {
   background-color: #0d7377;
   margin: 0.25rem;
 }
 
 .browse {
+  overflow-y: auto;
+  max-height: 87vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,14 +304,6 @@ form #signup {
   width: 35%;
   height: 2.5rem;
   margin-bottom: 0.55rem;
-}
-
-.search input {
-  padding-left: 1.5rem;
-  border-radius: 0.5rem;
-  width: 100%;
-  height: 100%;
-  border: none;
 }
 
 .search-icon {
@@ -237,7 +326,7 @@ form #signup {
 
 .channel-container {
   flex-grow: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .chat {
@@ -264,23 +353,34 @@ form #signup {
   white-space: pre-line;
   width: 100%;
   flex-basis: 93%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .emote {
-  transform: translateY(0.5rem);
-  width: 2rem;
-  height: 2rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .message {
+  padding: 0.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
   font-family: 'Raleway', sans-serif;
-  margin-top: 0.25rem;
+}
+
+.message-dark {;
+  background-color: #323232;
+  color: #fff;
+}
+
+.message-light {
+  background-color: rgb(255, 255, 255);
+  color: black;
 }
 
 .message-username {
   margin-right: 0.25rem;
-  color: red
 }
 
 ::-webkit-scrollbar {
@@ -299,13 +399,14 @@ form #signup {
   background: #555;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   body {
     background-color: #1b1717;
     color: #ffff;
     font-family: 'Ramabhadra', sans-serif;
     overflow-y: unset;
   }
+
   .browse {
     justify-content: center;
   }
@@ -323,8 +424,8 @@ form #signup {
     display: none;
   }
 
-  .header .container {
-    height: 2rem;
+  .user-context-menu {
+    top: 2rem;
   }
 
   .header * {
@@ -351,18 +452,29 @@ form #signup {
   }
 
   .chat {
-    height: 65%;
-    width: 100%;
-    flex-basis: 50%;
-  }
-
-  #content {
-    margin-left: 0.25rem;
-    margin-right: 0.25rem;
+    flex-grow: 1;
+    height: 50%;
     width: 100%;
   }
 
   .channel {
     flex-direction: column;
+  }
+
+  .column-half {
+    width: 100%;
+  }
+
+  .line-right {
+    padding: none;
+    border-right: none;
+  }
+
+  .dummy-player {
+    display: none;
+  }
+
+  .dummy-player-mobile {
+    display: unset;
   }
 }

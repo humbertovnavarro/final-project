@@ -1,0 +1,42 @@
+{
+  "userName" : {
+    "regex": [
+      {
+        "pattern": "^[a-zA-Z0-9_]{3,15}$",
+        "error": "Username must be between 3 and 15 characters long and can only contain letters, numbers, and underscores."
+      }
+    ]
+  },
+  "password" : {
+    "regex": [
+      {
+        "pattern": "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",
+        "error": "Password must be at minimum eight characters, and include at least one letter and one number"
+      }
+    ]
+  },
+  "email" : {
+    "regex": [
+      {
+        "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+        "error": "Email must be a valid email address."
+      }
+    ]
+  },
+  "userId" : {
+    "regex": [
+      {
+        "pattern": "^[0-9]$",
+        "error": "UserId must be a positive number."
+      }
+    ]
+  },
+  "color": {
+    "regex": [
+      {
+        "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+        "error": "Color must be a valid hex color."
+      }
+    ]
+  }
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import parseRoute from './parse-route';
 import AppContext from './app-context';
 import Channel from './pages/channel';
+import Dashboard from './pages/dashboard';
 import Browse from './pages/browse';
 import Header from './components/header';
 import SignUp from './components/signup';
@@ -10,21 +11,45 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     const user = JSON.parse(localStorage.getItem('user')) || {};
+    if(user) {
+      const req = {
+        method: 'GET',
+        headers: {
+          'X-Access-Token': user.token
+        }
+      };
+      fetch('/api/user', req)
+      .then(res => res.json())
+      .then(data => {
+        const newData = Object.assign(this.state.user, data);
+        this.setUser(newData);
+      }).catch(err => {
+        console.error(err);
+      });
+    }
     this.state = {
       route: parseRoute(window.location.hash),
       user: user,
-      modal: null
+      modal: null,
+      contextMenuOpen: false
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.setUser = this.setUser.bind(this);
+    this.logout = this.logout.bind(this);
   }
-
   setUser(data) {
     this.setState({
       user: data
     });
   }
-
+  logout() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('stream-key');
+    this.setState({
+      user: {}
+    });
+    window.location.hash = '#browse';
+  }
   componentDidMount() {
     window.addEventListener('hashchange', () => {
       const route = parseRoute(window.location.hash);
@@ -36,6 +61,12 @@ export default class App extends React.Component {
       if (e.target.matches('.modal-container')) {
         this.toggleModal(null);
       }
+      if(e.target.id === 'user') {
+        this.setState({contextMenuOpen: true});
+      } else {
+        this.setState({contextMenuOpen: false});
+      }
+
     });
   }
 
@@ -64,6 +95,8 @@ export default class App extends React.Component {
         return <Channel />;
       case 'browse':
         return <Browse />;
+      case 'dashboard':
+        return <Dashboard />;
       default:
         return <Browse />;
     }
@@ -72,20 +105,21 @@ export default class App extends React.Component {
   render() {
     const contextValue = {
       route: this.state.route,
-      user: this.state.user
+      user: this.state.user,
+      logout: this.logout
     };
     const modal = this.renderModal();
     return (
       <>
-      {modal}
-      <AppContext.Provider value={contextValue}>
-        <Header toggleModal={this.toggleModal} />
-        <div className="page">
+        {modal}
+        <AppContext.Provider value={contextValue}>
+          <Header contextMenuOpen={this.state.contextMenuOpen} toggleModal={this.toggleModal} />
+          <div className="page">
             <div id="content">
               {this.renderContent()}
             </div>
-        </div>
-      </AppContext.Provider>
+          </div>
+        </AppContext.Provider>
       </>
     );
   }

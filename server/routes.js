@@ -1,24 +1,87 @@
 require('dotenv/config');
 const fs = require('fs');
 const path = require('path');
-const StreamKey = require('./stream-key');
 const argon2 = require('argon2');
 const authMiddleware = require('./auth-middleware');
 const jwt = require('jsonwebtoken');
 const db = require('./db');
+const StreamKey = require('./lib/stream-key');
+const ValidatedInput = require('./lib/validated-input');
 module.exports = function routes(app) {
-  app.get(['/channel/:name', '/u/:name', '/user/:name'], (req,res,next) => {
+
+  app.get('/api/genkey', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const streamKey = new StreamKey(userId);
+    const sql = `
+      update "users" set "streamKey" = $1 where "userId" = $2;
+    `;
+    const params = [streamKey.key, userId];
+    db.query(sql, params).then(data => {
+      if (data.rows.length > 1) {
+        res.status(500).json({ error: 'An unexpected error occured' });
+        return;
+      }
+      const payload = {
+        streamKey: `${userId}?k=${streamKey.key}`
+      }
+      res.json(payload);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.get('/api/user', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const sql = `
+      select "userId", "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
+    `;
+    const params = [userId];
+    db.query(sql, params).then(data => {
+      const payload = data.rows[0];
+      if(payload.streamKey) {
+        payload.streamKey = `${req.user.userId}?k=${payload.streamKey}`;
+      } else {
+        payload.streamKey = '';
+      }
+      res.json(data.rows[0]);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.post('/api/user/:field', authMiddleware, (req, res, next) => {
+    const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
+    if (field.error) {
+      res.status(400).json({ error: field.error });
+      return;
+    }
+    const sql = `
+      update "users" set "${req.params.field}" = $1 where "userId" = $2;
+    `;
+    const params = [field.value, req.user.userId];
+    db.query(sql, params).then(data => {
+      res.status(200).json({error: null});
+      return;
+    }).catch(err => {
+      res.status(500).json({ error: 'An unexpected error occured' });
+      console.error(err);
+    });
+  });
+
+  app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
       select "userId" from "users" where LOWER("userName") = $1
-    `
+    `;
     db.query(sql, [req.params.name.toLowerCase()])
-    .then( data => {
-      if(data.rows.length === 0) {
-        res.redirect('/404');
-      } else {
-        res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
-      }
-    });
+      .then(data => {
+        if (data.rows.length === 0) {
+          res.redirect('/404');
+        } else {
+          res.redirect(`/#channel?channelId=${data.rows[0].userId}`);
+        }
+      });
   });
 
   app.get('/api/channel/:id', (req, res, next) => {
@@ -113,31 +176,37 @@ module.exports = function routes(app) {
   });
 
   app.post('/api/register', (req, res, next) => {
-    if (!req.body.userName || !req.body.password || !req.body.email) {
-      res.json({ error: 'Missing username, password, or email' });
+    const userName = new ValidatedInput('userName', req.body.userName);
+    const password = new ValidatedInput('password', req.body.password);
+    const email = new ValidatedInput('email', req.body.email);
+    if (userName.error) {
+      res.status(400).json({ error: userName.error });
       return;
     }
-    const invalidUserName = /[^a-zA-Z0-9_]/.test(req.body.userName);
-    if (invalidUserName) {
-      res.json({ error: 'Invalid username, usernames may only contain letters and numbers' });
+    if (password.error) {
+      res.status(400).json({ error: password.error });
+      return;
+    }
+    if (email.error) {
+      res.status(400).json({ error: email.error });
       return;
     }
     const sql = `
         select "userName" from "users" where LOWER("userName") = LOWER($1);
       `;
-    const params = [req.body.userName];
+    const params = [userName.value];
     db.query(sql, params).then(data => {
       if (data.rows.length > 0) {
         res.status(400).json({ error: 'Username already taken' });
         return;
       }
-      argon2.hash(req.body.password).then(hash => {
+      argon2.hash(password.value).then(hash => {
         const sql = `
           insert into "users" ("userName", "hash", "email", "color")
           values ($1, $2, $3, $4) returning "userId";
         `;
         const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        const params = [req.body.userName, hash, req.body.email, color];
+        const params = [userName.value, hash, email.value, color];
         db.query(sql, params).then(data => {
           const encode = {
             userId: data.rows[0].userId
@@ -145,7 +214,7 @@ module.exports = function routes(app) {
           const token = jwt.sign(encode, process.env.TOKEN_SECRET);
           const payload = {
             userId: data.rows[0].userId,
-            userName: req.body.userName,
+            userName: userName.value,
             token: token
           };
           res.json(payload);
@@ -159,13 +228,10 @@ module.exports = function routes(app) {
   });
 
   app.post('/api/login', (req, res, next) => {
-    const { password, userName } = req.body;
-    if (!password || !userName) {
-      res.status(400).json({ error: 'Missing password or username' });
-      return;
-    }
+    const password = req.body.password;
+    const userName = req.body.userName;
     const sql = `
-      select "userId", "userName", "hash" from "users" where "userName" = $1;
+      select "userId", "userName", "hash", "color", "streamKeyExpires" from "users" where "userName" = $1;
     `;
     const params = [userName];
     db.query(sql, params)
@@ -176,13 +242,9 @@ module.exports = function routes(app) {
             res.status(401).json({ error: 'Bad Login' });
             return;
           }
-          const { userId } = data.rows[0];
-          const token = jwt.sign({ userId: userId }, process.env.TOKEN_SECRET);
-          const payload = {
-            userId: userId,
-            userName: userName,
-            token: token
-          };
+          const payload = data.rows[0];
+          const token = jwt.sign({ userId: payload.userId }, process.env.TOKEN_SECRET);
+          payload.token = token;
           res.status(200).json(payload);
         });
       })
@@ -190,33 +252,5 @@ module.exports = function routes(app) {
         console.error(err);
         res.status(500).json({ error: 'An unexpected error occured' });
       });
-  });
-
-  app.get('/api/genkey', authMiddleware, (req, res, next) => {
-    const userId = req.user.userId;
-    const streamKey = new StreamKey();
-    const sql = `
-      update "users" set "streamKey" = $1 where "userId" = $2
-      returning "userId";
-    `;
-    const params = [streamKey.hash, userId];
-    db.query(sql, params).then(data => {
-      if (data.rows.length === 0) {
-        res.status(500).json({ error: 'An unexpected error occured' });
-        throw new Error('Corrupted token data.');
-      }
-      if (data.rows.length > 1) {
-        res.status(500).json({ error: 'An unexpected error occured' });
-        throw new Error('Corrupted database data.');
-      }
-      const payload = {
-        streamKey: streamKey.key,
-        streamKeyExpires: streamKey.expires
-      };
-      res.json(payload);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'An unexpected error occured' });
-    });
   });
 };
