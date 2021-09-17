@@ -17,29 +17,6 @@ class Header extends React.Component {
     }
   }
   render() {
-    const contextMenu = this.props.contextMenuOpen ?
-    <div className="user-context-menu">
-      <a href="#dashboard">User Dashboard</a>
-      <a href={`#channel?channelId=${this.context.user.userId}`}>My Channel</a>
-      <a id="logout" onClick={this.handleClick}>Logout</a>
-    </div>
-    :
-    null;
-    const button = (
-      <>
-      <label htmlFor="login">Login</label>
-      <button onClick={this.handleClick} id="login" className="material-icons">person_outline</button>
-      </>
-    );
-    const user = (
-      <>
-      <label htmlFor="user">{this.context.user.userName}</label>
-      <button id="user" onClick={this.handleClick}>
-        <Avatar channelId={this.context.user.userId}></Avatar>
-      </button>
-      {contextMenu}
-      </>
-    );
     return (
       <div className="header">
         <div className="container">
@@ -52,7 +29,27 @@ class Header extends React.Component {
             </div>
             <div className="column-half">
               <div className="row reverse item-center">
-                {this.context.user.userName ? user : button}
+                {this.context.user.userName ?
+                  <>
+                    <label htmlFor="user">{this.context.user.userName}</label>
+                    <button id="user" onClick={this.handleClick}>
+                      <Avatar channelId={this.context.user.userId}></Avatar>
+                    </button>
+                    {
+                      this.props.contextMenuOpen &&
+                      <div className="user-context-menu">
+                        <a href="#dashboard">User Dashboard</a>
+                        <a href={`#channel?channelId=${this.context.user.userId}`}>My Channel</a>
+                        <a id="logout" onClick={this.handleClick}>Logout</a>
+                      </div>
+                    }
+                  </>
+                :
+                  <>
+                    <label htmlFor="login">Login</label>
+                    <button onClick={this.handleClick} id="login" className="material-icons">person_outline</button>
+                  </>
+                }
               </div>
             </div>
           </div>

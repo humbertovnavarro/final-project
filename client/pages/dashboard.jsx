@@ -1,9 +1,7 @@
 import React from "react";
-import Avatar from "../components/avatar";
 import UserSettings from "../components/user-settings";
 
 class Dashboard extends React.Component {
-  static contextType = AppContext;
   render() {
     return (
       <div className="dashboard">
