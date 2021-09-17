@@ -145,6 +145,14 @@ input {
   padding: 0.5rem;
 }
 
+.dashboard-container {
+  padding: 1rem;
+}
+
+.line-right {
+  border-right: 2px solid #0d7377;
+}
+
 .user-context-menu {
   position: absolute;
   top: 4rem;
@@ -157,6 +165,22 @@ input {
 .user-context-menu a {
   border: black solid 1px;
   background-color: #0fa8ad50;
+}
+
+.user-settings form input:first-child {
+  padding-left: 1rem;
+  border: 0;
+  border-radius: 5px 0 0 5px;
+  background-color: #323232;
+  color: white;
+}
+
+.user-settings form input:nth-child(2) {
+  width: 5rem;
+  border: 0;
+  border-radius: 0 5px 5px 0;
+  color: white;
+  background-color: #0d7377;
 }
 
 .cyan {

@@ -6,20 +6,13 @@ class Dashboard extends React.Component {
   static contextType = AppContext;
   constructor(props) {
     super(props);
-    this.state = {
-      username: "",
-      password: "",
-      passwordConfirm: "",
-      email: "",
-      streamKey: ""
-    };
   }
   render() {
     return (
       <div className="dashboard">
         <div className="dashboard-container">
           <div className="row">
-            <div className="column-half">
+            <div className="column-half line-right padding-right">
               <UserSettings/>
             </div>
           </div>

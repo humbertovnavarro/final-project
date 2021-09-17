@@ -38,6 +38,8 @@ module.exports = function routes(app) {
     `;
     const params = [userId];
     db.query(sql, params).then(data => {
+      const payload = data.rows[0];
+      payload.streamKey = `${payload.streamKey}?k=${userId}`;
       res.json(data.rows[0]);
     }).catch(err => {
       console.error(err);
