@@ -34,12 +34,12 @@ module.exports = function routes(app) {
   app.get('/api/user', authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
     const sql = `
-      select "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
+      select "userId", "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
     `;
     const params = [userId];
     db.query(sql, params).then(data => {
       const payload = data.rows[0];
-      payload.streamKey = `${payload.streamKey}?k=${userId}`;
+      payload.streamKey = `${req.user.userId}?k=${payload.streamKey}`;
       res.json(data.rows[0]);
     }).catch(err => {
       console.error(err);

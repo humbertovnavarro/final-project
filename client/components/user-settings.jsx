@@ -26,7 +26,6 @@ class UserSettings extends React.Component {
     fetch("/api/user", req)
     .then(res => res.json())
     .then(data => {
-      console.log(data);
       this.setState(data);
     });
   }
@@ -36,6 +35,7 @@ class UserSettings extends React.Component {
     });
   }
   handleSubmit(e) {
+    e.preventDefault();
     const action = e.target.dataset.action;
     switch(action) {
       case "userName":
@@ -48,12 +48,9 @@ class UserSettings extends React.Component {
         const subAction = document.activeElement.dataset.action;
         console.log(subAction);
         if(subAction !== 'regen') {
-          navigator.clipboard.writeText(this.state.streamKey)
+          navigator.clipboard.write(this.state.streamKey)
             .then(() => alert('Copied to clipboard'))
             .catch(err => console.error(err));
-          this.setState({
-            streamKeyHidden: !this.state.streamKeyHidden
-          });
           break;
         }
         const req = {
@@ -73,7 +70,6 @@ class UserSettings extends React.Component {
         break;
     }
     console.log(action);
-    e.preventDefault();
   }
   render() {
     return (
@@ -112,7 +108,7 @@ class UserSettings extends React.Component {
           <label htmlFor="password">Stream Key</label>
           <div className="row">
             <button data-action="copy" className="full-width" onClick={this.handleClick}>
-              <input type="password" name="streamKey" onChange={this.handleChange} value={this.state.streamKey} />
+              <input name="streamKey" onChange={this.handleChange} value={this.state.streamKey} />
             </button>
             <input data-action="regen" type="submit" value="Regen" />
           </div>

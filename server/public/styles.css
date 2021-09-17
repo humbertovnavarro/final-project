@@ -65,6 +65,14 @@ input {
   padding: 2rem;
 }
 
+.search input {
+  padding-left: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
 .modal form input {
   margin-bottom: 1rem;
 }
@@ -72,6 +80,10 @@ input {
 .modal form div:first-child {
   font-size: 2rem;
   margin-bottom: 2rem;
+}
+
+.header label {
+  font-family: 'Raleway', sans-serif;
 }
 
 .modal form label {
@@ -122,10 +134,6 @@ input {
   height: 2.4rem;
 }
 
-.header label {
-  font-family: 'Raleway', sans-serif;
-}
-
 .player {
   background-color: #2d2424;
   max-width: 100%;
@@ -138,7 +146,9 @@ input {
 }
 
 .header {
-  height: 6vh;
+  position: sticky;
+  z-index: 3;
+  height: 5vh;
 }
 
 #content:first-child {
@@ -147,6 +157,8 @@ input {
 
 .dashboard-container {
   padding: 1rem;
+  height: 85vh;
+  overflow-y: auto;
 }
 
 .line-right {
@@ -154,6 +166,7 @@ input {
 }
 
 .user-context-menu {
+  z-index: 3;
   position: absolute;
   top: 4rem;
   display: flex;
@@ -196,6 +209,20 @@ input {
   height: 3rem;
 }
 
+.stream-card .footer {
+  z-index: 2;
+}
+.stream-card .shaka-bottom-controls {
+  display: none !important;
+}
+.stream-card .shaka-play-button-container {
+  display: none !important;
+}
+.stream-card .shaka-video-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
 .avatar > img {
   width: 100%;
   height: 100%;
@@ -213,12 +240,13 @@ input {
 }
 
 .stream-card {
+  position: relative;
   background-size: cover;
   min-width: calc(16rem * 1.5);
   min-height: calc(9rem * 1.5);
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+  flex-direction: column-reverse;
+  justify-content: space-between;
   background-color: #0d7377;
   margin: 0.25rem;
 }
@@ -228,6 +256,9 @@ input {
 }
 
 .stream-card-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
   font-family: 'Ramabhadra', sans-serif;
   padding: 0.25rem;
   display: flex;
@@ -260,14 +291,6 @@ input {
   margin-bottom: 0.55rem;
 }
 
-.search input {
-  padding-left: 1.5rem;
-  border-radius: 0.5rem;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
 .search-icon {
   position: absolute;
   left: 0.15rem;
@@ -288,11 +311,6 @@ input {
 
 .channel-container {
   flex-grow: 1;
-  overflow-y: auto;
-}
-
-.dashboard-container {
-  height: 85vh;
   overflow-y: auto;
 }
 
@@ -372,10 +390,6 @@ input {
   .stream-card {
     min-width: calc(16rem * 1.3);
     min-height: calc(9rem * 1.3);
-  }
-
-  .header {
-    height: 5vh;
   }
 
   .header .avatar {

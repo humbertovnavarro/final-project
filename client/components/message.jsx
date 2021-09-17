@@ -12,7 +12,6 @@ class Message extends React.Component {
       "/": '&#x2F;',
       "`": '&grave'
     };
-    const color = this.props.message.color;
     const reg = /[&<>"'/]/ig;
     this.state.sanitized = this.props.message.content.replace(reg, (match) => (map[match]));
     //Replace asterisk with strong tag
@@ -28,7 +27,7 @@ class Message extends React.Component {
       <div className="message">
         <span style={{color: this.props.message.color}}
         className="message-username">
-          {this.props.message.userName}
+          {this.props.message.userName + ' : '}
         </span>
         <span className="message-content"
          dangerouslySetInnerHTML={{__html: this.state.sanitized}}>

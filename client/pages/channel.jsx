@@ -1,8 +1,8 @@
 import React from 'react';
 import AppContext from '../app-context';
 import Avatar from '../components/avatar';
-import ShakaPlayer from 'shaka-player-react';
 import Chat from '../components/chat';
+import ShakaPlayer from 'shaka-player-react';
 import 'shaka-player/dist/controls.css';
 export default class Channel extends React.Component {
   static contextType = AppContext;
