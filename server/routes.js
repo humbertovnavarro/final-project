@@ -9,6 +9,58 @@ const StreamKey = require('./lib/stream-key');
 const ValidatedInput = require('./lib/validated-input');
 module.exports = function routes(app) {
 
+  app.get('/api/genkey', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const streamKey = new StreamKey(userId);
+    const sql = `
+      update "users" set "streamKey" = $1 where "userId" = $2;
+    `;
+    const params = [streamKey.key, userId];
+    db.query(sql, params).then(data => {
+      if (data.rows.length > 1) {
+        res.status(500).json({ error: 'An unexpected error occured' });
+        return;
+      }
+      const payload = {
+        streamKey: `${userId}?k=${streamKey.key}`
+      }
+      res.json(payload);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.get('/api/user', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const sql = `
+      select "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
+    `;
+    const params = [userId];
+    db.query(sql, params).then(data => {
+      res.json(data.rows[0]);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.patch('/api/user/:field', authMiddleware, (req, res, next) => {
+    const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
+    if (field.error) {
+      res.status(400).json({ error: field.error });
+    }
+    const sql = `
+      update "users" set "${field.name}" = $1 where "userId" = $2
+      returning "userName", "email", "color", "streamKeyExpires";
+    `;
+    const params = [field.value, req.user.userId];
+    db.query(sql, params).then(data => {
+    }).catch(err => {
+      console.error(err);
+    });
+  });
+
   app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
       select "userId" from "users" where LOWER("userName") = $1
@@ -191,64 +243,5 @@ module.exports = function routes(app) {
         console.error(err);
         res.status(500).json({ error: 'An unexpected error occured' });
       });
-  });
-
-  app.use(authMiddleware);
-  app.get('/api/genkey', (req, res, next) => {
-    const userId = req.user.userId;
-    const streamKey = new StreamKey();
-    const sql = `
-      update "users" set "streamKey" = $1 where "userId" = $2
-      returning "userId";
-    `;
-    const params = [streamKey.hash, userId];
-    db.query(sql, params).then(data => {
-      if (data.rows.length === 0) {
-        res.status(500).json({ error: 'An unexpected error occured' });
-        throw new Error('Corrupted token data.');
-      }
-      if (data.rows.length > 1) {
-        res.status(500).json({ error: 'An unexpected error occured' });
-        throw new Error('Corrupted database data.');
-      }
-      const payload = {
-        streamKey: streamKey.key,
-        streamKeyExpires: streamKey.expires
-      };
-      res.json(payload);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'An unexpected error occured' });
-    });
-  });
-
-  app.get('/api/user', (req, res, next) => {
-    const userId = req.user.userId;
-    const sql = `
-      select "userName", "email", "color", "streamKeyExpires" from "users" where "userId" = $1;
-    `;
-    const params = [userId];
-    db.query(sql, params).then(data => {
-      res.json(data.rows[0]);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'An unexpected error occured' });
-    });
-  });
-
-  app.patch('/api/user/:field', (req, res, next) => {
-    const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
-    if (field.error) {
-      res.status(400).json({ error: field.error });
-    }
-    const sql = `
-      update "users" set "${field.name}" = $1 where "userId" = $2
-      returning "userName", "email", "color", "streamKeyExpires";
-    `;
-    const params = [field.value, req.user.userId];
-    db.query(sql, params).then(data => {
-    }).catch(err => {
-      console.error(err);
-    });
   });
 };

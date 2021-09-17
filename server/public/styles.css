@@ -59,27 +59,27 @@ input {
   align-items: center;
 }
 
-form {
+.modal form {
   width: 100%;
   height: 100%;
   padding: 2rem;
 }
 
-form input {
+.modal form input {
   margin-bottom: 1rem;
 }
 
-form div:first-child {
+.modal form div:first-child {
   font-size: 2rem;
   margin-bottom: 2rem;
 }
 
-form label {
+.modal form label {
   font-size: 1.5rem;
   font-family: 'Raleway', sans-serif;
 }
 
-form #signup {
+.modal form #signup {
   margin-top: 2rem;
 }
 

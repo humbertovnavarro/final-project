@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const db = require('./db');
 module.exports = function rtmp(app) {
   app.post('/streams/on_publish', (req, res, next) => {
@@ -10,11 +9,8 @@ module.exports = function rtmp(app) {
       res.sendStatus(404);
       return;
     }
-    const sha256 = crypto.createHash('sha256');
-    sha256.update(streamKey);
-    const streamKeyHash = sha256.digest('hex');
     let sql = 'select "userId" from users where "streamKey" = $1';
-    let params = [streamKeyHash];
+    let params = [streamKey];
     db.query(sql, params)
       .then(data => {
         if (data.rows.length === 0) {
