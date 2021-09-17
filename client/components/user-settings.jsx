@@ -39,7 +39,6 @@ class UserSettings extends React.Component {
     const payload = {
       [field]: value
     };
-    console.log(payload);
     const req = {
       method: "POST",
       headers: {
@@ -48,7 +47,6 @@ class UserSettings extends React.Component {
       },
       body: JSON.stringify(payload)
     }
-    console.log(req);
     fetch(`/api/user/${field}`, req)
     .catch(err => {
       alert('An unkown error occured.');
@@ -61,6 +59,7 @@ class UserSettings extends React.Component {
     switch(action) {
       case "color":
         this.updateField('color', this.state.color);
+        alert('Color updated.');
         break;
       case "userName":
         break;
@@ -70,7 +69,6 @@ class UserSettings extends React.Component {
         break;
       case "streamKey":
         const subAction = document.activeElement.dataset.action;
-        console.log(subAction);
         if(subAction !== 'regen') {
           navigator.clipboard.writeText(this.state.streamKey)
           .then( () => {
@@ -97,7 +95,6 @@ class UserSettings extends React.Component {
           });
         break;
     }
-    console.log(action);
   }
   render() {
     return (

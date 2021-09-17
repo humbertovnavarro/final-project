@@ -39,7 +39,7 @@ export default class Channel extends React.Component {
 
   render() {
     const player = <ShakaPlayer autoPlay className="player rounded" src={`/live/${this.state.channelId}.mpd`} />
-    const dummyPlayer = <div className='player rounded'></div>
+    const dummyPlayer = <div className='player rounded dummy-player'>&nbsp;</div>
     return (
       <>
       <div className="channel">

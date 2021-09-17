@@ -83,6 +83,7 @@ input {
 }
 
 .header label {
+  margin-right: 0.25rem;
   font-family: 'Raleway', sans-serif;
 }
 
@@ -168,7 +169,8 @@ input {
 .user-context-menu {
   z-index: 3;
   position: absolute;
-  top: 4rem;
+  right:0;
+  top: 3rem;
   display: flex;
   flex-direction: column;
   font-family: 'Raleway', sans-serif;
@@ -177,7 +179,7 @@ input {
 
 .user-context-menu a {
   border: black solid 1px;
-  background-color: #0fa8ad50;
+  background-color: #0d7377;
 }
 
 .user-settings form input:first-child {
@@ -391,7 +393,7 @@ input {
   background: #555;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   body {
     background-color: #1b1717;
     color: #ffff;
@@ -414,6 +416,10 @@ input {
 
   .header .avatar {
     display: none;
+  }
+
+  .user-context-menu {
+    top: 2rem;
   }
 
   .header * {
@@ -440,9 +446,9 @@ input {
   }
 
   .chat {
-    height: 65%;
+    flex-grow: 1;
+    height: 50%;
     width: 100%;
-    flex-basis: 50%;
   }
 
   .channel {
