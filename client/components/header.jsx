@@ -46,15 +46,15 @@ class Header extends React.Component {
     return (
       <div className="header">
         <div className="container">
-          <div className="row center">
+          <div className="row item-center">
             <div className="column-half">
-              <div className="row baseline">
+              <div className="row item-center">
                 <h1><a href="#home">{'kamaii.tv'}</a></h1>
                 <h2><a href="#browse">{'Browse'}</a></h2>
               </div>
             </div>
             <div className="column-half">
-              <div className="row reverse center">
+              <div className="row reverse item-center">
                 {this.context.user.userName ? user : button}
               </div>
             </div>

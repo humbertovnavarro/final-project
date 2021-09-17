@@ -6,9 +6,6 @@ const jsonMiddleware = express.json();
 const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const db = require('./db');
-
-db.query('DELETE FROM "streams"');
 
 app.use(staticMiddleware);
 app.use(urlMiddleware);

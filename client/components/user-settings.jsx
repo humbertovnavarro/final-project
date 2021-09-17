@@ -27,7 +27,10 @@ class UserSettings extends React.Component {
     fetch("/api/user", req)
     .then(res => res.json())
     .then(data => {
-      data.streamKey = data.streamKey || "";
+      const newState = data;
+      if(!data.streamKey) {
+        newState.streamKey = '';
+      }
       this.setState(data);
     });
   }

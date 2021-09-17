@@ -26,15 +26,25 @@ function authorize(socket) {
     }
     socket.userId = decoded.userId;
     const sql = `
-        select "color", "userName" from "users" where "userId" = $1
-      `;
+      select "color", "userName" from "users" where "userId" = $1
+    `;
     db.query(sql, [socket.userId])
       .then(data => {
         socket.userName = data.rows[0].userName || 'Anonymous';
         socket.color = data.rows[0].color;
       });
+    const sql2 = `
+      update "streams" set "viewers" = "viewers" + 1 where "channelId" = $1
+    `
+    db.query(sql2, [room]);
     socket.room = room;
     socket.join(room);
   }
+  socket.on("disconnect", () => {
+    const sql = `
+      update "streams" set "viewers" = "viewers" - 1 where "channelId" = $1
+    `
+    db.query(sql, [room]);
+  });
 }
 module.exports = authorize;
