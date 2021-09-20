@@ -80,8 +80,10 @@ class UserSettings extends React.Component {
           console.log(data);
           if(data.error) {
             alert(data.error)
+            e.target.reset();
           } else {
             alert('Uploaded profile picture.');
+            e.target.reset();
           }
         })
         .catch(err => {
@@ -159,18 +161,18 @@ class UserSettings extends React.Component {
         <form data-action="email" onSubmit={this.handleSubmit}>
           <label htmlFor="email">Email</label>
           <div className="row">
-            <input name="email" onChange={this.handleChange} value={this.state.email}/>
+            <input autoComplete="email" name="email" onChange={this.handleChange} value={this.state.email}/>
             <input type="submit" value="Update" />
           </div>
         </form>
         <form data-action="password" onSubmit={this.handleSubmit}>
           <label htmlFor="password">Password</label>
           <div className="row">
-            <input type="password" name="password" onChange={this.handleChange} value={this.state.password} />
+            <input autoComplete="new-password" type="password" name="password" onChange={this.handleChange} value={this.state.password} />
           </div>
           <label htmlFor="password">Confirm Password</label>
           <div className="row">
-            <input type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm}/>
+            <input autoComplete="new-password" type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm}/>
             <input type="submit" value="Update" />
           </div>
         </form>
