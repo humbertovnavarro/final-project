@@ -14,6 +14,7 @@ class Chat extends React.Component {
     this.handleInput = this.handleInput.bind(this);
     this.bottom = React.createRef();
   }
+
   connnect() {
     if(this.socket) {
       this.socket.disconnect();
@@ -35,11 +36,17 @@ class Chat extends React.Component {
       console.error(message);
     });
   }
+
+  componentWillUnmount() {
+    this.socket.disconnect();
+  }
+
   componentDidUpdate(prevProps) {
     if(prevProps.user.token !== this.props.user.token) {
       this.connnect();
     }
   }
+
   componentDidMount() {
     window.addEventListener('keydown', (e) => {
       if (e.shiftKey) {
@@ -61,6 +68,7 @@ class Chat extends React.Component {
         this.connnect();
       });
   }
+
   handleInput(e) {
     if(e.target.value.length >= 500) {
       this.setState({error: 'Message must be less than 500 characters.'});
@@ -69,6 +77,7 @@ class Chat extends React.Component {
     }
     this.setState({userMessage: e.target.value});
   }
+
   render() {
     const messages = this.state.messages.map((message) => {
       return (

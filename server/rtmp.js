@@ -37,4 +37,24 @@ module.exports = function rtmp(app) {
         res.sendStatus(500);
       });
   });
+
+  app.post('/streams/on_done', (req, res, next) => {
+    if (req.ip !== '::ffff:127.0.0.1') {
+      return;
+    }
+    const clientId = req.body.clientid;
+    const sql = `
+      delete from "streams" where "clientId" = $1;
+    `;
+    const params = [clientId];
+    db.query(sql, params)
+    .then(() => {
+      res.sendStatus(200);
+    }
+    ).catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+  });
+
 };

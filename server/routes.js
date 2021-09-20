@@ -7,7 +7,21 @@ const jwt = require('jsonwebtoken');
 const db = require('./db');
 const StreamKey = require('./lib/stream-key');
 const ValidatedInput = require('./lib/validated-input');
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '/public/avatars/'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${req.user.userId}.png`);
+  }
+});
+const upload = multer({ storage: storage });
 module.exports = function routes(app) {
+
+  app.post('/api/avatar', upload.single, (req, res, next) => {
+    res.sendStatus(200);
+  });
 
   app.get('/api/genkey', authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
