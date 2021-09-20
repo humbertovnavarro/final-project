@@ -87,7 +87,7 @@ class UserSettings extends React.Component {
           }
         })
         .catch(err => {
-          alert('Something went wrong!');
+          alert('Oops! Something went wrong!');
           console.error(err);
         });
         break;
