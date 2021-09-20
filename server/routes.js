@@ -223,7 +223,7 @@ module.exports = function routes(app) {
       res.status(400).json({error: 'File must be less then 10MB and an image'});
       return;
     }
-    sharp(req.file.buffer)
+    sharp(req.file.path)
     .resize(256)
     .toFile(path.join(__dirname, `public/avatars/${req.user.userId}.webp`), (err, info) => {
       if(err) {
