@@ -35,6 +35,10 @@ class UserSettings extends React.Component {
     });
   }
   handleChange(e) {
+    if(e.target.name === 'avatar') {
+      this.setState({file: e.target.files[0]});
+      return;
+    }
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -53,7 +57,7 @@ class UserSettings extends React.Component {
     }
     fetch(`/api/user/${field}`, req)
     .catch(err => {
-      alert('An unkown error occured.');
+      alert('An unknown error occured.');
       console.error(err);
     });
   }
@@ -61,6 +65,32 @@ class UserSettings extends React.Component {
     e.preventDefault();
     const action = e.target.dataset.action;
     switch(action) {
+      case "avatar":
+        const formData = new FormData(e.target);
+        const avatarReq = {
+          method: "POST",
+          headers : {
+            'X-Access-Token': this.context.user.token
+          },
+          body: formData,
+        }
+        fetch("/api/user/avatar", avatarReq)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          if(data.error) {
+            alert(data.error)
+            e.target.reset();
+          } else {
+            alert('Uploaded profile picture.');
+            e.target.reset();
+          }
+        })
+        .catch(err => {
+          alert('Oops! Something went wrong!');
+          console.error(err);
+        });
+        break;
       case "color":
         this.updateField('color', this.state.color);
         alert('Color updated.');
@@ -105,8 +135,13 @@ class UserSettings extends React.Component {
       <div className="user-settings">
         <h1>User Settings</h1>
         <div className="row item-center">
-          <Avatar />
-          <button>Upload</button>
+          <Avatar channelId={this.context.user.userId} time={this.context.time} />
+          <form data-action="avatar" onSubmit={this.handleSubmit}>
+            <div className="row">
+              <input accept="image/*" type="file" name="avatar"/>
+              <input type="submit" value="upload"/>
+            </div>
+          </form>
         </div>
         <form data-action="color" id="color-form" onSubmit={this.handleSubmit}>
           <label htmlFor="color">Chat Color</label>
@@ -125,18 +160,18 @@ class UserSettings extends React.Component {
         <form data-action="email" onSubmit={this.handleSubmit}>
           <label htmlFor="email">Email</label>
           <div className="row">
-            <input name="email" onChange={this.handleChange} value={this.state.email}/>
+            <input autoComplete="email" name="email" onChange={this.handleChange} value={this.state.email}/>
             <input type="submit" value="Update" />
           </div>
         </form>
         <form data-action="password" onSubmit={this.handleSubmit}>
           <label htmlFor="password">Password</label>
           <div className="row">
-            <input type="password" name="password" onChange={this.handleChange} value={this.state.password} />
+            <input autoComplete="new-password" type="password" name="password" onChange={this.handleChange} value={this.state.password} />
           </div>
           <label htmlFor="password">Confirm Password</label>
           <div className="row">
-            <input type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm}/>
+            <input autoComplete="new-password" type="password" name="passwordConfirm" onChange={this.handleChange} value={this.state.passwordConfirm}/>
             <input type="submit" value="Update" />
           </div>
         </form>

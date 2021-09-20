@@ -106,7 +106,7 @@ export default class App extends React.Component {
     const contextValue = {
       route: this.state.route,
       user: this.state.user,
-      logout: this.logout
+      logout: this.logout,
     };
     const modal = this.renderModal();
     return (

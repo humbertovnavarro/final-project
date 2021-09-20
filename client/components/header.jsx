@@ -23,7 +23,7 @@ class Header extends React.Component {
           <div className="row item-center">
             <div className="column-half">
               <div className="row item-center">
-                <h1><a href="#home">{'kamaii.tv'}</a></h1>
+                <h1><a href="#home"><img src="images/logo.png"></img></a></h1>
                 <h2><a href="#browse">{'Browse'}</a></h2>
               </div>
             </div>
@@ -33,7 +33,7 @@ class Header extends React.Component {
                   <>
                     <label htmlFor="user">{this.context.user.userName}</label>
                     <button id="user" onClick={this.handleClick}>
-                      <Avatar channelId={this.context.user.userId}></Avatar>
+                      <Avatar channelId={this.context.user.userId} time={this.context.time}></Avatar>
                     </button>
                     {
                       this.props.contextMenuOpen &&
