@@ -137,10 +137,8 @@ class UserSettings extends React.Component {
           <Avatar channelId={this.context.user.userId} time={this.context.time} />
           <form data-action="avatar" onSubmit={this.handleSubmit}>
             <div className="row">
-              <input type="file" name="avatar"/>
-              <input type="submit" value="upload"
-                accept="image/*"
-              />
+              <input accept="image/*" type="file" name="avatar"/>
+              <input type="submit" value="upload"/>
             </div>
           </form>
         </div>
