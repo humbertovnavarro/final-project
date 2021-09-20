@@ -2,6 +2,7 @@ const db = require('./db');
 module.exports = function rtmp(app) {
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
+      res.end();
       return;
     }
     const { name: channelId, clientid: clientId, addr: ip, k: streamKey } = req.body;
@@ -40,6 +41,7 @@ module.exports = function rtmp(app) {
 
   app.post('/streams/on_done', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
+      res.end();
       return;
     }
     const clientId = req.body.clientid;
@@ -48,13 +50,13 @@ module.exports = function rtmp(app) {
     `;
     const params = [clientId];
     db.query(sql, params)
-    .then(() => {
-      res.sendStatus(200);
-    }
-    ).catch(err => {
-      console.error(err);
-      res.sendStatus(500);
-    });
+      .then(() => {
+        res.sendStatus(200);
+      }
+      ).catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+      });
   });
 
 };
