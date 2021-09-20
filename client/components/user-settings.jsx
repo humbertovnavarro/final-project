@@ -88,6 +88,7 @@ class UserSettings extends React.Component {
         })
         .catch(err => {
           alert('Something went wrong!');
+          console.error(err);
         });
         break;
       case "color":
