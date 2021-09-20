@@ -33,7 +33,7 @@ class Header extends React.Component {
                   <>
                     <label htmlFor="user">{this.context.user.userName}</label>
                     <button id="user" onClick={this.handleClick}>
-                      <Avatar channelId={this.context.user.userId}></Avatar>
+                      <Avatar channelId={this.context.user.userId} time={this.context.time}></Avatar>
                     </button>
                     {
                       this.props.contextMenuOpen &&

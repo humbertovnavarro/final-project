@@ -7,82 +7,9 @@ const jwt = require('jsonwebtoken');
 const db = require('./db');
 const StreamKey = require('./lib/stream-key');
 const ValidatedInput = require('./lib/validated-input');
-const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '/public/avatars/'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${req.user.userId}.png`);
-  }
-});
-const upload = multer({ storage: storage });
+const avatarUpload = require('./image-upload-middleware');
+const sharp = require('sharp');
 module.exports = function routes(app) {
-
-  app.post('/api/avatar', upload.single, (req, res, next) => {
-    res.sendStatus(200);
-  });
-
-  app.get('/api/genkey', authMiddleware, (req, res, next) => {
-    const userId = req.user.userId;
-    const streamKey = new StreamKey(userId);
-    const sql = `
-      update "users" set "streamKey" = $1 where "userId" = $2;
-    `;
-    const params = [streamKey.key, userId];
-    db.query(sql, params).then(data => {
-      if (data.rows.length > 1) {
-        res.status(500).json({ error: 'An unexpected error occured' });
-        return;
-      }
-      const payload = {
-        streamKey: `${userId}?k=${streamKey.key}`
-      }
-      res.json(payload);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'An unexpected error occured' });
-    });
-  });
-
-  app.get('/api/user', authMiddleware, (req, res, next) => {
-    const userId = req.user.userId;
-    const sql = `
-      select "userId", "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
-    `;
-    const params = [userId];
-    db.query(sql, params).then(data => {
-      const payload = data.rows[0];
-      if(payload.streamKey) {
-        payload.streamKey = `${req.user.userId}?k=${payload.streamKey}`;
-      } else {
-        payload.streamKey = '';
-      }
-      res.json(data.rows[0]);
-    }).catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'An unexpected error occured' });
-    });
-  });
-
-  app.post('/api/user/:field', authMiddleware, (req, res, next) => {
-    const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
-    if (field.error) {
-      res.status(400).json({ error: field.error });
-      return;
-    }
-    const sql = `
-      update "users" set "${req.params.field}" = $1 where "userId" = $2;
-    `;
-    const params = [field.value, req.user.userId];
-    db.query(sql, params).then(data => {
-      res.status(200).json({error: null});
-      return;
-    }).catch(err => {
-      res.status(500).json({ error: 'An unexpected error occured' });
-      console.error(err);
-    });
-  });
 
   app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
@@ -266,5 +193,84 @@ module.exports = function routes(app) {
         console.error(err);
         res.status(500).json({ error: 'An unexpected error occured' });
       });
+  });
+  app.get('/api/genkey', authMiddleware, (req, res, next) => {
+    const userId = req.user.userId;
+    const streamKey = new StreamKey(userId);
+    const sql = `
+      update "users" set "streamKey" = $1 where "userId" = $2;
+    `;
+    const params = [streamKey.key, userId];
+    db.query(sql, params).then(data => {
+      if (data.rows.length > 1) {
+        res.status(500).json({ error: 'An unexpected error occured' });
+        return;
+      }
+      const payload = {
+        streamKey: `${userId}?k=${streamKey.key}`
+      }
+      res.json(payload);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.use(authMiddleware);
+
+  app.post('/api/user/avatar', avatarUpload, (req, res, next) => {
+    if (!req.file.mimetype.startsWith('image/') || req.file.size > 10000000) {
+      res.status(400).json({error: 'File must be less then 10MB and an image'});
+      return;
+    }
+    sharp(req.file.buffer)
+    .resize(256)
+    .toFile(path.join(__dirname, `public/avatars/${req.user.userId}.webp`), (err, info) => {
+      if(err) {
+        console.error(err);
+      } else {
+        res.status(200).json({});
+        return;
+      }
+    })
+  });
+
+  app.get('/api/user', (req, res, next) => {
+    const userId = req.user.userId;
+    const sql = `
+      select "userId", "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
+    `;
+    const params = [userId];
+    db.query(sql, params).then(data => {
+      const payload = data.rows[0];
+      if (payload.streamKey) {
+        payload.streamKey = `${req.user.userId}?k=${payload.streamKey}`;
+      } else {
+        payload.streamKey = '';
+      }
+      res.json(data.rows[0]);
+    }).catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'An unexpected error occured' });
+    });
+  });
+
+  app.post('/api/user/:field', (req, res, next) => {
+    const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
+    if (field.error) {
+      res.status(400).json({ error: field.error });
+      return;
+    }
+    const sql = `
+      update "users" set "${req.params.field}" = $1 where "userId" = $2;
+    `;
+    const params = [field.value, req.user.userId];
+    db.query(sql, params).then(data => {
+      res.status(200).json({ error: null });
+      return;
+    }).catch(err => {
+      res.status(500).json({ error: 'An unexpected error occured' });
+      console.error(err);
+    });
   });
 };

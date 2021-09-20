@@ -35,6 +35,10 @@ class UserSettings extends React.Component {
     });
   }
   handleChange(e) {
+    if(e.target.name === 'avatar') {
+      this.setState({file: e.target.files[0]});
+      return;
+    }
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -53,7 +57,7 @@ class UserSettings extends React.Component {
     }
     fetch(`/api/user/${field}`, req)
     .catch(err => {
-      alert('An unkown error occured.');
+      alert('An unknown error occured.');
       console.error(err);
     });
   }
@@ -61,6 +65,29 @@ class UserSettings extends React.Component {
     e.preventDefault();
     const action = e.target.dataset.action;
     switch(action) {
+      case "avatar":
+        const formData = new FormData(e.target);
+        const avatarReq = {
+          method: "POST",
+          headers : {
+            'X-Access-Token': this.context.user.token
+          },
+          body: formData,
+        }
+        fetch("/api/user/avatar", avatarReq)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          if(data.error) {
+            alert(data.error)
+          } else {
+            alert('Uploaded profile picture.');
+          }
+        })
+        .catch(err => {
+          alert('Something went wrong!');
+        });
+        break;
       case "color":
         this.updateField('color', this.state.color);
         alert('Color updated.');
@@ -105,8 +132,15 @@ class UserSettings extends React.Component {
       <div className="user-settings">
         <h1>User Settings</h1>
         <div className="row item-center">
-          <Avatar />
-          <button>Upload</button>
+          <Avatar channelId={this.context.user.userId} time={this.context.time} />
+          <form data-action="avatar" onSubmit={this.handleSubmit}>
+            <div className="row">
+              <input type="file" name="avatar"/>
+              <input type="submit" value="upload"
+                accept="image/*"
+              />
+            </div>
+          </form>
         </div>
         <form data-action="color" id="color-form" onSubmit={this.handleSubmit}>
           <label htmlFor="color">Chat Color</label>
