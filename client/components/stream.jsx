@@ -7,7 +7,10 @@ function Stream(props) {
   return (
   <a href={`#channel?channelId=${props.channelId}`}>
   <div className="stream-card" style={style}>
-    <ShakaPlayer muted={true} autoPlay={false} src={`/live/${props.channelId}.mpd`}></ShakaPlayer>
+    {
+      props.isLive &&
+      <ShakaPlayer muted={true} autoPlay={false} src={`/live/${props.channelId}.mpd`}></ShakaPlayer>
+    }
     <div className="stream-card-footer">
       <div className="column-half">
         <div className="row item-center">

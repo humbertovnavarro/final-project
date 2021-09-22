@@ -9,7 +9,20 @@ const StreamKey = require('./lib/stream-key');
 const ValidatedInput = require('./lib/validated-input');
 const avatarUpload = require('./image-upload-middleware');
 const sharp = require('sharp');
+const urlMiddleware = require('express').urlencoded({ extended: false });
 module.exports = function routes(app) {
+
+  app.get('/avatar/:id', urlMiddleware, (req, res, next) => {
+    const {id} = req.params;
+    const file = path.join(__dirname,`public/avatars/${id}.webp`);
+    fs.exists(file, exists => {
+      if(exists) {
+        res.sendFile(file)
+      } else {
+        res.sendFile(path.join(__dirname,'public/avatars/default.webp'));
+      }
+    });
+  });
 
   app.get(['/channel/:name', 'c/:name', '/u/:name', '/user/:name'], (req, res, next) => {
     const sql = `
@@ -216,9 +229,7 @@ module.exports = function routes(app) {
     });
   });
 
-  app.use(authMiddleware);
-
-  app.post('/api/user/avatar', avatarUpload, (req, res, next) => {
+  app.post('/api/user/avatar', [authMiddleware, avatarUpload], (req, res, next) => {
     if (!req.file.mimetype.startsWith('image/') || req.file.size > 10000000) {
       res.status(400).json({error: 'File must be less then 10MB and an image'});
       return;
@@ -235,7 +246,7 @@ module.exports = function routes(app) {
     })
   });
 
-  app.get('/api/user', (req, res, next) => {
+  app.get('/api/user',authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
     const sql = `
       select "userId", "userName", "email", "color", "streamKey", "streamKeyExpires" from "users" where "userId" = $1;
@@ -255,7 +266,7 @@ module.exports = function routes(app) {
     });
   });
 
-  app.post('/api/user/:field', (req, res, next) => {
+  app.post('/api/user/:field', authMiddleware, (req, res, next) => {
     const field = new ValidatedInput(req.params.field, req.body[req.params.field]);
     if (field.error) {
       res.status(400).json({ error: field.error });
