@@ -365,7 +365,7 @@ input {
   height: 1rem;
 }
 
-.header img:first-child {
+#logo {
   height: 2rem;
   width: 2rem;
   margin-top: 0.5rem;

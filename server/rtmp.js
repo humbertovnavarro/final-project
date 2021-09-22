@@ -46,7 +46,7 @@ module.exports = function rtmp(app) {
     }
     const clientId = req.body.clientid;
     const sql = `
-      delete from "streams" where "clientId" = $1;
+      delete from "streams" where "streamId" = $1;
     `;
     const params = [clientId];
     db.query(sql, params)
