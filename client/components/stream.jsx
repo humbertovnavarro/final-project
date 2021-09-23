@@ -3,7 +3,6 @@ import Avatar from './avatar';
 import ShakaPlayer from 'shaka-player-react';
 function Stream(props) {
   let style;
-  const hidden = props.isLive ? '' : 'hidden';
   return (
   <a href={`#channel?channelId=${props.channelId}`}>
   <div className="stream-card" style={style}>
@@ -20,8 +19,6 @@ function Stream(props) {
       </div>
       <div className="column-half">
         <div className="row reverse">
-          <p className={`red ${hidden}`}>{props.viewers}</p>
-          <span className={`material-icons red ${hidden}`}>person</span>
         </div>
       </div>
     </div>
