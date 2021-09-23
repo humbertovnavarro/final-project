@@ -7,11 +7,10 @@
   "scripts": {
     "setup": "bash scripts/setup.bash",
     "build": "webpack --mode=production",
-    "start": "node server/index.js",
+    "start": "node server/index.js 2> error.log 1> debug.log",
     "dev": "npm-run-all --silent --parallel dev:*",
     "dev:client": "webpack --mode=development --watch --stats=minimal",
     "dev:server": "nodemon server/index.js",
-    "dev:nginx": "sudo kill `cat nginx.pid` && nginx/sbin/nginx",
     "db:import": "bash scripts/db-import.bash"
   },
   "husky": {
