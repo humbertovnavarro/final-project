@@ -60,7 +60,7 @@ export default class App extends React.Component {
         route: route
       });
     });
-    window.addEventListener('click', e => {
+    window.addEventListener('mouseup', e => {
       if (e.target.matches('.modal-container')) {
         this.toggleModal(null);
       }
