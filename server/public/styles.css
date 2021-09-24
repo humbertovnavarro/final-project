@@ -1,3 +1,4 @@
+/* Page */
 body {
   background-color: #1b1717;
   color: #ffff;
@@ -20,6 +21,7 @@ input {
   height: 2rem;
 }
 
+/* Custom Button */
 .custom-button {
   color: white;
   border: none;
@@ -39,6 +41,27 @@ input {
   transform: translateY(3px);
 }
 
+/* Avatar */
+
+.avatar {
+  margin: 0.25rem;
+  border-radius: 5rem;
+  background-color: #f3f3f3;
+  width: 5rem;
+  height: 5rem;
+}
+
+/* Search Bar */
+
+.search input {
+  padding-left: 1.5rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Modals */
 .modal {
   font-family: 'Roboto', sans-serif;
   z-index: 2;
@@ -68,14 +91,6 @@ input {
   padding: 1rem;
 }
 
-.search input {
-  padding-left: 1.5rem;
-  border-radius: 0.5rem;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
 .modal form div:first-child {
   font-size: 2rem;
   margin-bottom: 2rem;
@@ -95,14 +110,91 @@ input {
   margin-top: 1rem;
 }
 
-.red {
-  color: rgb(255, 0, 0);
+#sign-in {
+  margin-top: 2rem;
+}
+
+#sign-up-link {
+  background-color: transparent;
+  transform: scale(0.8);
+}
+
+/* Video Player */
+
+.player {
+  background-color: #2d2424;
+  max-width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .dummy-player {
   height: 90%;
   flex-grow: 1;
 }
+
+/* Browse */
+
+.stream-card-footer .avatar {
+  width: 3rem;
+  height: 3rem;
+}
+
+.stream-card .footer {
+  z-index: 2;
+}
+
+.stream-card .shaka-video-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.stream-card {
+  position: relative;
+  background-size: cover;
+  min-width: calc(16rem * 1.5);
+  min-height: calc(9rem * 1.5);
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  background-color: #0d7377;
+  margin: 0.25rem;
+}
+
+.stream-card-body {
+  flex-grow: 1;
+}
+
+.stream-card-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-family: 'Ramabhadra', sans-serif;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  background-color: #1b1717be;
+  flex-basis: 10%;
+}
+
+.search {
+  position: relative;
+  font-family: 'Ramabhadra', sans-serif;
+  font-size: larger;
+  width: 35%;
+  height: 2.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.15rem;
+  top: 0.54rem;
+  color: #000;
+}
+
+
+/* Header */
 
 .header > .container {
   display: flex;
@@ -123,24 +215,10 @@ input {
   margin-left: 1.25rem;
 }
 
-.avatar {
-  margin: 0.25rem;
-  border-radius: 5rem;
-  background-color: #f3f3f3;
-  width: 5rem;
-  height: 5rem;
-}
-
 .header .avatar {
   margin: 0;
   width: 2.4rem;
   height: 2.4rem;
-}
-
-.player {
-  background-color: #2d2424;
-  max-width: 100%;
-  margin-bottom: 0.5rem;
 }
 
 #content {
@@ -163,6 +241,15 @@ input {
   height: 85vh;
   overflow-y: auto;
 }
+
+#logo {
+  height: 2rem;
+  width: 2rem;
+  margin-top: 0.5rem;
+}
+
+
+/* User Dashboard */
 
 .line-right {
   border-right: 2px solid #0d7377;
@@ -206,35 +293,13 @@ input {
   height: 2rem;
 }
 
+/* Utility */
 .cyan {
   background-color: #0d7377;
 }
 
 .rounded {
   border-radius: 0.5rem;
-}
-
-.stream-card-footer .avatar {
-  width: 3rem;
-  height: 3rem;
-}
-
-.stream-card .footer {
-  z-index: 2;
-}
-
-.stream-card .shaka-bottom-controls {
-  display: none !important;
-}
-
-.stream-card .shaka-play-button-container {
-  display: none !important;
-}
-
-.stream-card .shaka-video-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 }
 
 .avatar > img {
@@ -249,36 +314,10 @@ input {
   box-shadow: 0 0 4px 2px  rgba(0, 0, 0, 0.226);
 }
 
+/* Channel */
+
 .profile span {
   margin: 1rem;
-}
-
-.stream-card {
-  position: relative;
-  background-size: cover;
-  min-width: calc(16rem * 1.5);
-  min-height: calc(9rem * 1.5);
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: space-between;
-  background-color: #0d7377;
-  margin: 0.25rem;
-}
-
-.stream-card-body {
-  flex-grow: 1;
-}
-
-.stream-card-footer {
-  position: absolute;
-  left: 0;
-  right: 0;
-  font-family: 'Ramabhadra', sans-serif;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  background-color: #1b1717be;
-  flex-basis: 10%;
 }
 
 .profile {
@@ -294,31 +333,6 @@ input {
   justify-content: center;
   flex-wrap: wrap;
   flex-direction: ro;
-}
-
-.search {
-  position: relative;
-  font-family: 'Ramabhadra', sans-serif;
-  font-size: larger;
-  width: 35%;
-  height: 2.5rem;
-  margin-bottom: 0.55rem;
-}
-
-.search-icon {
-  position: absolute;
-  left: 0.15rem;
-  top: 0.54rem;
-  color: #000;
-}
-
-#sign-in {
-  margin-top: 2rem;
-}
-
-#sign-up-link {
-  background-color: transparent;
-  transform: scale(0.8);
 }
 
 .channel {
@@ -364,12 +378,6 @@ input {
   height: 1rem;
 }
 
-#logo {
-  height: 2rem;
-  width: 2rem;
-  margin-top: 0.5rem;
-}
-
 .message {
   padding: 0.25rem;
   margin-top: 0.5rem;
@@ -392,6 +400,7 @@ input {
   margin-right: 0.25rem;
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -407,6 +416,8 @@ input {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Media queries */
 
 @media screen and (max-width: 960px) {
   body {
