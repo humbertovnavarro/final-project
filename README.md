@@ -19,6 +19,7 @@ NGINX, Express, socket.io, PostgreSQL, Sharp, Shaka Player
 A domain name and SSL Certificates installed by certbot
 See https://certbot.eff.org/lets-encrypt/debianbuster-other
 # Getting Started
+* Setup free SSL certificates using certbot
 * Clone the repository from GitHub into a users home directory (kamaii)
 * Modify nginx.example.conf to match your domain name and your username
 * do `npm run setup` to setup NGINX with custom RTMP Module
