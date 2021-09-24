@@ -42,8 +42,7 @@ input {
 .modal {
   font-family: 'Roboto', sans-serif;
   z-index: 2;
-  max-width: 50vw;
-  height: 50vh;
+  width: 25%;
   border-radius: 20px;
   box-shadow: 0 0 10px #000;
   background-color: #323232;
@@ -66,7 +65,7 @@ input {
 .modal form {
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .search input {
@@ -75,10 +74,6 @@ input {
   width: 100%;
   height: 100%;
   border: none;
-}
-
-.modal form input {
-  margin-bottom: 1rem;
 }
 
 .modal form div:first-child {
@@ -96,8 +91,8 @@ input {
   font-family: 'Raleway', sans-serif;
 }
 
-.modal form #signup {
-  margin-top: 2rem;
+#sign-up {
+  margin-top: 1rem;
 }
 
 .red {
@@ -318,8 +313,12 @@ input {
 }
 
 #sign-in {
-  transform: scale(0.8);
   margin-top: 2rem;
+}
+
+#sign-up-link {
+  background-color: transparent;
+  transform: scale(0.8);
 }
 
 .channel {
@@ -443,11 +442,8 @@ input {
   }
 
   .modal {
-    max-width: 90vw;
-    height: 90vh;
-    border-radius: 20px;
-    box-shadow: 0 0 10px #000;
-    background-color: #323232;
+    width: 80%;
+    transform: translateY(10%);
   }
 
   .profile {

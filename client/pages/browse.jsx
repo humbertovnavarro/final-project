@@ -63,7 +63,7 @@ class Browse extends React.Component {
       <div className="container">
         <div className="row justify-center">
           <div className="search">
-            <input onChange={this.handleChange} value={this.state.search} type="text" placeholder="Search"/>
+            <input onChange={this.handleChange} value={this.state.search} type="text" placeholder="Search for a stream"/>
             <span className="material-icons search-icon">search</span>
           </div>
         </div>
