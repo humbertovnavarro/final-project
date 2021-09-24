@@ -10,8 +10,11 @@ NGINX, Express, socket.io, PostgreSQL, Sharp, Shaka Player
 * Chatting with users aside the stream
 * Uploading Profile Pictures
 * Streaming to your channel using OBS
+
 https://user-images.githubusercontent.com/16251746/134731396-bf0614a7-7929-4bf3-957b-4143002f9534.mp4
+
 https://user-images.githubusercontent.com/16251746/134732084-e21ffe70-3fe8-4b0d-9e82-622b09c688a4.mp4
+
 # Stretch Features
 * Moderate your channel by banning users and moderating users
 * Edit your profile using markdown
