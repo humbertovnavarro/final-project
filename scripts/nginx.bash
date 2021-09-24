@@ -1,5 +1,3 @@
-PID=`cat ../nginx.pid`
-pwd
 if [ -z "$PID" ]; then
     ./nginx/sbin/nginx -c conf/nginx.conf
 else

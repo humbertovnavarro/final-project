@@ -7,11 +7,13 @@
   "scripts": {
     "setup": "bash scripts/setup.bash",
     "build": "webpack --mode=production",
-    "start": "node server/index.js 2> error.log 1> debug.log",
+    "start": "node server/index.js 2> error.log 1> debug.log && bash scripts/nginx.bash",
     "dev": "npm-run-all --silent --parallel dev:*",
     "dev:client": "webpack --mode=development --watch --stats=minimal",
     "dev:server": "nodemon server/index.js",
-    "db:import": "bash scripts/db-import.bash"
+    "db:import": "bash scripts/db-import.bash",
+    "nginx": "bash scripts/nginx.bash"
+
   },
   "husky": {
     "hooks": {
