@@ -409,7 +409,7 @@ input {
   background: #555;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 960px) {
   body {
     background-color: #1b1717;
     color: #ffff;
