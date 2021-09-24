@@ -2,7 +2,7 @@ const db = require('./db');
 module.exports = function rtmp(app) {
   app.post('/streams/on_publish', (req, res, next) => {
     if (req.ip !== '::ffff:127.0.0.1') {
-      res.end();
+      res.sendStatus(404);
       return;
     }
     const { name: channelId, clientid: clientId, addr: ip, k: streamKey } = req.body;
@@ -20,7 +20,8 @@ module.exports = function rtmp(app) {
         }
         const { userId } = data.rows[0];
         if (userId !== Number.parseInt(channelId, 10)) {
-          throw new Error('id mismatch');
+          res.sendStatus(404);
+          return;
         }
         sql = `insert into "streams" ("streamId","channelId", "ip")
         values ($1, $2, $3)`;

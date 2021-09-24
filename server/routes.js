@@ -190,6 +190,10 @@ module.exports = function routes(app) {
     const params = [userName];
     db.query(sql, params)
       .then(data => {
+        if(!data.rows[0]) {
+          res.status(401).json({ error: 'Bad Login' });
+          return;
+        }
         const { hash } = data.rows[0];
         argon2.verify(hash, password).then(match => {
           if (!match) {
