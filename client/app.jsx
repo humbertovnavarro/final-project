@@ -60,8 +60,13 @@ export default class App extends React.Component {
         route: route
       });
     });
-    window.addEventListener('mouseup', e => {
+    window.addEventListener('click', e => {
+      const x = e.clientX;
+      const y = e.clientY;
       if (e.target.matches('.modal-container')) {
+        if (document.elementFromPoint(x, y) !== e.target) {
+          return;
+        }
         this.toggleModal(null);
       }
       if (e.target.id === 'user') {
@@ -69,7 +74,6 @@ export default class App extends React.Component {
       } else {
         this.setState({ contextMenuOpen: false });
       }
-
     });
   }
 
