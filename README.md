@@ -15,3 +15,14 @@ NGINX, Express, socket.io, PostgreSQL, Sharp, Shaka Player
 * Moderate your channel by banning users and moderating users
 * Edit your profile using markdown
 * Bot API to chat, and perform administrative actions
+# Dependencies
+A domain name and SSL Certificates installed by certbot
+See https://certbot.eff.org/lets-encrypt/debianbuster-other
+# Getting Started
+* Clone the repository from GitHub into a users home directory (kamaii)
+* Modify nginx.example.conf to match your domain name and your username
+* do `npm run setup` to setup NGINX with custom RTMP Module
+* Wait for compile to finish
+* Change permissions of /server/public/live so that the user running express can access it 
+`chmod -R 777 /server/public/live`
+* Do `npm run start` as a user with sudo permissions, or setup your own startup script to run NGINX as root, and express as your user.
