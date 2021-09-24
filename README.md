@@ -4,9 +4,9 @@ I wanted to build this project to create a platform for smaller communities, whi
 # Live Link
 https://kamaii.tv
 # Technologies used
-NGINX
-Express
-socket.io
-PostgreSQL
-Sharp
-Shaka Player
+NGINX, Express, socket.io, PostgreSQL, Sharp, Shaka Player
+# Features
+## Live streaming to the browser
+## Chatting with users aside the stream
+## Uploading Profile Pictures
+## Streaming to your channel using OBS
