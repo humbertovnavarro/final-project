@@ -207,7 +207,6 @@ module.exports = function routes(app) {
         res.status(500).json({ error: 'An unexpected error occured' });
       });
   });
-
   app.get('/api/genkey', authMiddleware, (req, res, next) => {
     const userId = req.user.userId;
     const streamKey = new StreamKey(userId);

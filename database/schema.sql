@@ -24,7 +24,6 @@ CREATE TABLE "public"."streams" (
 	"isLive" boolean NOT NULL DEFAULT 'true',
 	"previewImage" TEXT,
 	"ip" inet NOT NULL,
-	"url" text NOT NULL,
 	"createdAt" timestamp with time zone NOT NULL DEFAULT NOW(),
 	CONSTRAINT "streams_pk" PRIMARY KEY ("channelId")
 ) WITH (
