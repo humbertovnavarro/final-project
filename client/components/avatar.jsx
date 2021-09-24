@@ -1,10 +1,10 @@
 import React from 'react';
 class Avatar extends React.Component {
   render() {
-    const source = `/avatars/${this.props.channelId}.webp?t=${Date.now()}`
-    return <div className={`avatar ${this.props.isLive ? 'live' : ''}`}>
-      <img src={source} onError={this.handleError}/>
-    </div>
+    const source = `/avatar/${this.props.channelId}`;
+    return <div className={`avatar ${this.props.isLive ? 'live' : ''}?time=${this.props.time}`}>
+      <img src={source} alt="Avatar"/>
+    </div>;
   }
 }
 export default Avatar;

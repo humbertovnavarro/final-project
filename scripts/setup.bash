@@ -5,7 +5,15 @@ nginxPath='nginx-1.20.1'
 nginxTar='nginx-1.20.1.tar.gz'
 rtmpTar='v1.2.2.tar.gz'
 rtmpPath='nginx-rtmp-module-1.2.2'
-sudo apt-get install libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev wget -y
+sudo apt update
+sudo apt install build-essential -y
+sudo apt install libpcre3-dev -y
+sudo apt install libpcre3 -y
+sudo apt install zlib1g-dev -y
+sudo apt install zlib1g -y
+sudo apt install libssl-dev -y
+sudo apt install libssl -y
+sudo apt install  wget -y
 wget https://github.com/arut/nginx-rtmp-module/archive/refs/tags/v1.2.2.tar.gz -nc
 wget http://nginx.org/download/nginx-1.20.1.tar.gz -nc
 tar -xvzf $rtmpTar

@@ -9,3 +9,5 @@ node_modules
 *.log
 .env
 ./nginx.pid
+debug.log
+error.log

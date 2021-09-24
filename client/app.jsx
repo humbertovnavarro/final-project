@@ -11,7 +11,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     const user = JSON.parse(localStorage.getItem('user')) || {};
-    if(user) {
+    if (user.token) {
       const req = {
         method: 'GET',
         headers: {
@@ -19,13 +19,13 @@ export default class App extends React.Component {
         }
       };
       fetch('/api/user', req)
-      .then(res => res.json())
-      .then(data => {
-        const newData = Object.assign(this.state.user, data);
-        this.setUser(newData);
-      }).catch(err => {
-        console.error(err);
-      });
+        .then(res => res.json())
+        .then(data => {
+          const newData = Object.assign(this.state.user, data);
+          this.setUser(newData);
+        }).catch(err => {
+          console.error(err);
+        });
     }
     this.state = {
       route: parseRoute(window.location.hash),
@@ -37,11 +37,13 @@ export default class App extends React.Component {
     this.setUser = this.setUser.bind(this);
     this.logout = this.logout.bind(this);
   }
+
   setUser(data) {
     this.setState({
       user: data
     });
   }
+
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('stream-key');
@@ -50,6 +52,7 @@ export default class App extends React.Component {
     });
     window.location.hash = '#browse';
   }
+
   componentDidMount() {
     window.addEventListener('hashchange', () => {
       const route = parseRoute(window.location.hash);
@@ -58,15 +61,19 @@ export default class App extends React.Component {
       });
     });
     window.addEventListener('click', e => {
+      const x = e.clientX;
+      const y = e.clientY;
       if (e.target.matches('.modal-container')) {
+        if (document.elementFromPoint(x, y) !== e.target) {
+          return;
+        }
         this.toggleModal(null);
       }
-      if(e.target.id === 'user') {
-        this.setState({contextMenuOpen: true});
+      if (e.target.id === 'user') {
+        this.setState({ contextMenuOpen: true });
       } else {
-        this.setState({contextMenuOpen: false});
+        this.setState({ contextMenuOpen: false });
       }
-
     });
   }
 
@@ -106,7 +113,7 @@ export default class App extends React.Component {
     const contextValue = {
       route: this.state.route,
       user: this.state.user,
-      logout: this.logout,
+      logout: this.logout
     };
     const modal = this.renderModal();
     return (

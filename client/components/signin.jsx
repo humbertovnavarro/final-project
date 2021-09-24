@@ -13,6 +13,7 @@ class SignIn extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+
   handleClick(e) {
     e.preventDefault();
     this.props.toggleModal('sign-up');
@@ -85,7 +86,7 @@ class SignIn extends React.Component {
               <input id="sign-in" type="submit" value="Sign In" className="custom-button" />
             </div>
             <div className="row justify-center">
-              <button id="sign-in" className="custom-button" onClick={this.handleClick}>Sign Up Instead</button>
+              <button id="sign-up-link" className="custom-button" onClick={this.handleClick}>Sign Up Instead</button>
             </div>
           </form>
         </div>

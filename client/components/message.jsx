@@ -19,9 +19,6 @@ class Message extends React.Component {
     this.state.sanitized = this.state.sanitized.replaceAll(/\*([^*]+?)\*/g, "<b>$1<\/b>");
     //Replace urls with anchor tag
     this.state.sanitized = this.state.sanitized.replaceAll(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g, "<a src=$1>$1<\/a>");
-    //Global Emotes
-    //Replace all PogU's with emote.
-    this.state.sanitized = this.state.sanitized.replaceAll(/(PogU)/g, '<img class="emote" src="/emotes/PogU.png" />');
   }
   render() {
     const luminanceValue = luminance(this.props.message.color);
