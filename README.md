@@ -12,7 +12,6 @@ NGINX, Express, socket.io, PostgreSQL, Sharp, Shaka Player
 * Streaming to your channel using OBS
 
 # Stretch Features
-* Uploading emotes to use on your channel
+* Moderate your channel by banning users and moderating users
 * Edit your profile using markdown
-* Slash commands in chat to ban users, mod users, etc
-* Bot API to perform actions in chat
+* Bot API to chat, and perform administrative actions
