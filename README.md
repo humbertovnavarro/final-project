@@ -26,6 +26,7 @@ See https://certbot.eff.org/lets-encrypt/debianbuster-other
 * Setup free SSL certificates using certbot
 * Clone the repository from GitHub into a users home directory (kamaii)
 * Modify nginx.example.conf to match your domain name and your username
+* Set dash path to /server/public/live
 * do `npm run setup` to setup NGINX with custom RTMP Module
 * Wait for compile to finish
 * Change permissions of /server/public/live so that the user running express can access it 
