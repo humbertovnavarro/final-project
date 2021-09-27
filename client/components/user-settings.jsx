@@ -183,6 +183,7 @@ class UserSettings extends React.Component {
             </button>
             <input data-action="regen" type="submit" value="Generate" />
           </div>
+          <p>Set your OBS service to custom and stream to rtmp://kamaii.tv/stream</p>
         </form>
       </div>
     )
