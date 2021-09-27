@@ -185,7 +185,7 @@ module.exports = function routes(app) {
     const password = req.body.password;
     const userName = req.body.userName;
     const sql = `
-      select "userId", "userName", "hash", "color", "streamKeyExpires" from "users" where "userName" = $1;
+      select "userId", "userName" from "users" where "userName" = $1;
     `;
     const params = [userName];
     db.query(sql, params)
