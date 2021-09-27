@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const db = require('./db');
 const StreamKey = require('./lib/stream-key');
 const ValidatedInput = require('./lib/validated-input');
-const avatarUpload = require('./image-upload-middleware');
+const imageUpload = require('./image-upload-middleware');
 const sharp = require('sharp');
 const urlMiddleware = require('express').urlencoded({ extended: false });
 module.exports = function routes(app) {
@@ -185,7 +185,7 @@ module.exports = function routes(app) {
     const password = req.body.password;
     const userName = req.body.userName;
     const sql = `
-      select "userId", "userName" from "users" where "userName" = $1;
+      select "userId", "userName", "hash", "color", "streamKeyExpires" from "users" where "userName" = $1;
     `;
     const params = [userName];
     db.query(sql, params)
@@ -200,7 +200,12 @@ module.exports = function routes(app) {
             res.status(401).json({ error: 'Bad Login' });
             return;
           }
-          const payload = data.rows[0];
+          const userId = data.rows[0].userId;
+          const userName = data.rows[0].userName;
+          const payload = {
+            userId: userId,
+            userName: userName,
+          };
           const token = jwt.sign({ userId: payload.userId }, process.env.TOKEN_SECRET);
           payload.token = token;
           res.status(200).json(payload);
@@ -233,7 +238,7 @@ module.exports = function routes(app) {
     });
   });
 
-  app.post('/api/user/avatar', [authMiddleware, avatarUpload], (req, res, next) => {
+  app.post('/api/user/avatar', [authMiddleware, imageUpload], (req, res, next) => {
     if (!req.file.mimetype.startsWith('image/') || req.file.size > 10000000) {
       res.status(400).json({error: 'File must be less then 10MB and an image'});
       return;
