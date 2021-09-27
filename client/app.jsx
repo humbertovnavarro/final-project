@@ -10,7 +10,11 @@ import SignIn from './components/signin';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    const user = JSON.parse(localStorage.getItem('user')) || {};
+    const user = JSON.parse(localStorage.getItem('user')) || {
+      userId: 8,
+      userName: 'demouser',
+      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsImlhdCI6MTYzMjc2MzEzNX0.TpQlJZ2tk4RSbo65Cw_qKuLLkfl8QGeQMgZacvL7enk'
+    };
     if (user.token) {
       const req = {
         method: 'GET',
