@@ -3,7 +3,7 @@ body {
   background-color: #1b1717;
   color: #ffff;
   font-family: 'Ramabhadra', sans-serif;
-  overflow-y: clip;
+  overflow: hidden;
 }
 
 .dummy-player-mobile {
