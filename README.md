@@ -4,17 +4,19 @@ I wanted to build this project to create a platform for smaller communities, whi
 # Live Link
 https://kamaii.tv
 # Technologies used
+* Front-End client constructed with <b>React</b>
 * RTMP Streaming using <b>NGINX</b> RTMP Module
 * Backend API using <b>Express</b>
 * Real time messaging using <b>socket.io</b>
 * Backend Database utilizing <b>PostgreSQL</b>
 * Image resizing and processing using <b>Sharp</b>
-Shaka Player
+* DASH Protocol video consumption using <b>Shaka Player React</b>
 # Features
 * Live streaming to the browser
 * Chatting with users aside the stream
 * Uploading Profile Pictures
 * Streaming to your channel using OBS
+* Custom chat colors
 
 ## Chatting using socket.io
 https://user-images.githubusercontent.com/16251746/134731396-bf0614a7-7929-4bf3-957b-4143002f9534.mp4
@@ -37,6 +39,6 @@ See https://certbot.eff.org/lets-encrypt/debianbuster-other
 * Set dash path to /server/public/live
 * do `npm run setup` to setup NGINX with custom RTMP Module
 * Wait for compile to finish
-* Change permissions of /server/public/live so that the user running express can access it
+* Change permissions of /server/public/live so that the user running express can read it e.g.
 `chmod -R 777 /server/public/live`
 * Do `npm run start` as a user with sudo permissions, or setup your own startup script to run NGINX as root, and express as your user.
