@@ -6,8 +6,8 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <div className="dashboard-container">
-          <div className="row">
-            <div className="column-half line-right padding-right">
+          <div className="row justify-center">
+            <div className="padding-right">
               <UserSettings/>
             </div>
           </div>

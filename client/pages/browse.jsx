@@ -43,18 +43,20 @@ class Browse extends React.Component {
 
   handleChange(event) {
     this.setState({ search: event.target.value });
-    const request = {
-      method: 'POST',
-      body: JSON.stringify({ query: event.target.value }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    fetch('/api/channels/query', request)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({ streams: res });
-      });
+    if(event.target.value.length > 1) {
+      const request = {
+        method: 'POST',
+        body: JSON.stringify({ query: event.target.value }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      fetch('/api/channels/query', request)
+        .then(res => res.json())
+        .then(res => {
+          this.setState({ streams: res });
+        });
+    }
   }
 
   render() {

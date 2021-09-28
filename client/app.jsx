@@ -35,11 +35,13 @@ export default class App extends React.Component {
       route: parseRoute(window.location.hash),
       user: user,
       modal: null,
-      contextMenuOpen: false
+      contextMenuOpen: false,
+      time: Date.now()
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.setUser = this.setUser.bind(this);
     this.logout = this.logout.bind(this);
+    this.setTime = this.setTime.bind(this);
   }
 
   setUser(data) {
@@ -113,11 +115,17 @@ export default class App extends React.Component {
     }
   }
 
+  setTime() {
+    this.setState({time: Date.now()});
+  }
+
   render() {
     const contextValue = {
       route: this.state.route,
       user: this.state.user,
-      logout: this.logout
+      logout: this.logout,
+      setTime: this.setTime,
+      time: this.state.time,
     };
     const modal = this.renderModal();
     return (

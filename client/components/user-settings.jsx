@@ -77,11 +77,11 @@ class UserSettings extends React.Component {
         fetch("/api/user/avatar", avatarReq)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           if(data.error) {
             alert(data.error)
             e.target.reset();
           } else {
+            this.context.setTime();
             alert('Uploaded profile picture.');
             e.target.reset();
           }
