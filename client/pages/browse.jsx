@@ -70,7 +70,7 @@ class Browse extends React.Component {
           </div>
         </div>
         <div className="browse">
-          {streamCards.length > 0 ? streamCards : <h1>No Streams :(</h1>}
+          {streamCards.length > 0 ? streamCards : <h2>Nobody is streaming, but maybe you could be :)</h2>}
         </div>
       </div>
     );

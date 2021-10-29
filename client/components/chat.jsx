@@ -91,7 +91,7 @@ class Chat extends React.Component {
           <div ref={this.bottom}></div>
         </div>
         <p className="red">{this.state.error}</p>
-        <textarea onInput={this.handleInput} value={this.state.userMessage}></textarea>
+        <textarea onInput={this.handleInput} value={this.state.userMessage}  placeholder="Send a message"></textarea>
       </div>
 
     );

@@ -54,6 +54,7 @@ input {
 /* Search Bar */
 
 .search input {
+  transition: all 0.3s ease-in-out;
   padding-left: 1.5rem;
   border-radius: 0.5rem;
   width: 100%;
@@ -133,6 +134,14 @@ input {
 }
 
 /* Browse */
+.browse a {
+  transition: all 0.2s;
+}
+
+.browse a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.411);
+}
 
 .stream-card-footer .avatar {
   width: 3rem;
@@ -161,6 +170,10 @@ input {
   margin: 0.25rem;
 }
 
+.stream-card:hover {
+  background-color: #0fa8ad;
+}
+
 .stream-card-body {
   flex-grow: 1;
 }
@@ -186,13 +199,16 @@ input {
   margin-bottom: 0.55rem;
 }
 
+.search input:focus {
+  border-radius: 0;
+}
+
 .search-icon {
   position: absolute;
   left: 0.15rem;
   top: 0.54rem;
   color: #000;
 }
-
 
 /* Header */
 
@@ -248,6 +264,17 @@ input {
   margin-top: 0.5rem;
 }
 
+.user-context-menu a {
+  transition: all 0.5s;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: black solid 1px;
+  background-color: #0d7377;
+}
+
+.user-context-menu a:hover {
+  background-color: #139ba0;
+}
 
 /* User Dashboard */
 
@@ -256,6 +283,7 @@ input {
 }
 
 .user-context-menu {
+  transition: all 0.1s;
   z-index: 3;
   position: absolute;
   right: 0;
@@ -264,11 +292,6 @@ input {
   flex-direction: column;
   font-family: 'Raleway', sans-serif;
   text-align: left;
-}
-
-.user-context-menu a {
-  border: black solid 1px;
-  background-color: #0d7377;
 }
 
 .user-settings form input:first-child {
@@ -280,11 +303,27 @@ input {
 }
 
 .user-settings form input:nth-child(2) {
+  transition: all 0.25s;
   width: 5rem;
   border: 0;
   border-radius: 0 5px 5px 0;
   color: white;
   background-color: #0d7377;
+}
+
+.user-settings form input:nth-child(2):active {
+  width: 5rem;
+  border: 0;
+  border-radius: 0 5px 5px 0;
+  color: white;
+  background-color: #119195;
+  transform: translateX(-0.5rem);
+}
+
+.user-settings form input:nth-child(2):hover {
+  width: 5rem;
+  color: white;
+  background-color: #119195;
 }
 
 #color-form > input {
@@ -300,6 +339,14 @@ input {
 
 .rounded {
   border-radius: 0.5rem;
+}
+
+.shrink {
+  transform: scale(0);
+}
+
+.grow {
+  transform: scale(1);
 }
 
 .avatar > img {

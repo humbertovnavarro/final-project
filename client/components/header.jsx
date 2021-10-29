@@ -35,14 +35,11 @@ class Header extends React.Component {
                     <button id="user" onClick={this.handleClick}>
                       <Avatar channelId={this.context.user.userId} time={this.context.time}></Avatar>
                     </button>
-                    {
-                      this.props.contextMenuOpen &&
-                      <div className="user-context-menu">
+                      <div className={`user-context-menu ${this.props.contextMenuOpen ? 'grow' : 'shrink'}`}>
                         <a href="#dashboard">User Dashboard</a>
                         <a href={`#channel?channelId=${this.context.user.userId}`}>My Channel</a>
                         <a id="logout" onClick={this.handleClick}>Logout</a>
                       </div>
-                    }
                   </>
                 :
                   <>
